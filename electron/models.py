@@ -1,19 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
-# from django.conf import settings
-# User = settings.AUTH_USER_MODEL
+from django.conf import settings
+from django.urls import reverse
 
-class Task(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
-    completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+User = settings.AUTH_USER_MODEL
+
+
+class Categories(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=255, blank=True, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ['completed']
+        return self.name
 
 
+class Product(models.Model):
+    category = models.ForeignKey("Categories", on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=255, blank=True, unique=True, db_index=True, verbose_name="URL")
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=255)
+    price = models.IntegerField()
+    image = models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return self.name

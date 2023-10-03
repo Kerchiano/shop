@@ -1,53 +1,39 @@
-from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib import messages
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, TemplateView, DetailView
 
-from .models import Task
+from electron.models import Product, Categories
 
 
-class TaskDelete(LoginRequiredMixin, DeleteView):
-    model = Task
-    context_object_name = 'task'
-    success_url = reverse_lazy('tasks')
+class Home(TemplateView):
+    template_name = 'electron/home.html'
 
-    def form_valid(self, form):
-        messages.success(self.request, "The task was deleted successfully.")
-        return super(TaskDelete, self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
 
-
-class TaskUpdate(LoginRequiredMixin, UpdateView):
-    model = Task
-    fields = ['title', 'description', 'completed']
-    success_url = reverse_lazy('tasks')
-
-    def form_valid(self, form):
-        messages.success(self.request, "The task was updated successfully.")
-        return super(TaskUpdate, self).form_valid(form)
+        context['category_list'] = Categories.objects.all()
+        return context
 
 
-class TaskCreate(LoginRequiredMixin, CreateView):
-    model = Task
-    fields = ['title', 'description', 'completed']
-    success_url = reverse_lazy('tasks')
+class ProductList(ListView):
+    model = Product
+    template_name = 'electron/product_list.html'
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        messages.success(self.request, "The task was created successfully.")
-        return super(TaskCreate, self).form_valid(form)
+    def get_queryset(self):
+        return Product.objects.filter(category__slug=self.kwargs['category_slug'])
 
+    def get_context_data(self, **kwargs):
+        context = super(ProductList, self).get_context_data(**kwargs)
 
-class TaskDetail(LoginRequiredMixin, DetailView):
-    model = Task
-    context_object_name = 'task'
+        context['category_list'] = Categories.objects.all()
+        return context
 
 
-class TaskList(LoginRequiredMixin, ListView):
-    model = Task
-    context_object_name = 'tasks'
+class ProductDetail(DetailView):
+    model = Product
+    slug_url_kwarg = 'detail_slug'
+    context_object_name = 'detail'
 
-def home(request):
-    return render(request, 'electron/home.html')
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetail, self).get_context_data(**kwargs)
+
+        context['category_list'] = Categories.objects.all()
+        return context

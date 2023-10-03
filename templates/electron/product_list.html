@@ -1,0 +1,24 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block header %}
+    {% for object in category_list %}
+
+        <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
+    {% endfor %}
+{% endblock header %}
+{% block content %}
+    <div class="container">
+        <ul style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;'>
+            {% for object in object_list %}
+                <li class="list_card">
+                    <img class="contain" src="{{ object.image.url }}" alt="Card image cap">
+                    <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>
+                    <h3>{{ object.price }}₴</h3>
+                    <button class='glowing-btn' style="font-size: 0.9em; width: 194px"><span
+                            class='glowing-txt'>Ку<span
+                            class='faulty-letter'>пи</span>ть</span></button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
