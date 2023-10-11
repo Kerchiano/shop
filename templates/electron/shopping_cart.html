@@ -1,0 +1,21 @@
+{% extends 'electron/base.html' %}
+{% block cart %}
+    <div class="cart">
+        <i class="bi bi-cart4" id="main-cart"></i>
+        <div class="total-text">
+            <p id="items">Items</p>
+            <p id="items-basket"></p>
+        </div>
+    </div>
+    <div id="cart-items">
+        <ol id="list-item">
+        </ol>
+
+        <div class="total-text">
+            <p>Total: </p>
+            <p id="total-price"></p>
+        </div>
+    </div>
+
+{% endblock %}
+

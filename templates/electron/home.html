@@ -2,7 +2,6 @@
 {% load static %}
 {% block header %}
     {% for object in category_list %}
-
         <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
     {% endfor %}
 {% endblock header %}

@@ -1,5 +1,4 @@
 {% extends 'electron/base.html' %}
-{% load static %}
 {% block header %}
     {% for object in category_list %}
 
@@ -10,7 +9,8 @@
     <div class="container">
         <ul style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;'>
             {% for object in object_list %}
-                <li class="list_card">
+                <li class="item" data-price={{ object.price }} data-name={{ object.name }}>
+                    <h4 data-product-id={{ object.slug }}></h4>
                     <img class="contain" src="{{ object.image.url }}" alt="Card image cap">
                     <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>
                     <h3>{{ object.price }}₴</h3>

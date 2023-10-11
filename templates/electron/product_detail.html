@@ -1,20 +1,17 @@
 {% extends 'electron/base.html' %}
-{% load static %}
 {% block header %}
     {% for object in category_list %}
         <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
     {% endfor %}
 {% endblock header %}
 {% block content %}
-    <div class="detail_card">
+    <li class="item" id="detail_card" data-price={{ object.price }} data-name={{ object.name }}>
+        <h4 data-product-id={{ object.slug }}></h4>
         <img class="img_detail" src="{{ detail.image.url }}">
-        <div class="text_detail">
-            <h2>{{ detail.name }}</h2>
-            <h3>{{ detail.price }}₴</h3>
-            <button class='glowing-btn' style="width: 194px"><span class='glowing-txt'>Ку<span
-                    class='faulty-letter'>пи</span>ть</span>
-            </button>
-        </div>
-    </div>
-
+        <h2>{{ detail.name }}</h2>
+        <h3>{{ detail.price }}₴</h3>
+        <button class='glowing-btn' style="width: 194px"><span class='glowing-txt'>Ку<span
+                class='faulty-letter'>пи</span>ть</span>
+        </button>
+    </li>
 {% endblock %}

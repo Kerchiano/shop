@@ -15,7 +15,6 @@ class Home(TemplateView):
 
 class ProductList(ListView):
     model = Product
-    template_name = 'electron/product_list.html'
 
     def get_queryset(self):
         return Product.objects.filter(category__slug=self.kwargs['category_slug'])
@@ -37,3 +36,15 @@ class ProductDetail(DetailView):
 
         context['category_list'] = Categories.objects.all()
         return context
+
+
+class Checkout(ListView):
+    model = Product
+    template_name = 'electron/checkout.html'
+    context_object_name = 'products'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(ShoppingCart, self).get_context_data(**kwargs)
+    #
+    #     context['category_list'] = Categories.objects.all()
+    #     return context
