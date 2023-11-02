@@ -33,80 +33,22 @@
                 <a href="{% url 'register' %}" class="btn btn-register">Signup</a>
             {% endif %}
         </div>
-        <div class="shopping-cart" style="padding-right: 20px">
-            <div class="cart">
-                <i class="bi bi-cart4" id="main-cart" style="display: inline-block; margin-bottom: -10px"></i>
-                <div class="total-text">
-                    <span id="items">Items</span>
-                    <span id="items-basket" style="display: inline-block; padding-bottom: 1px"></span>
-                </div>
-            </div>
-            <div id="cart-items" style="margin-right: -15px">
-                <ol id="list-item">
-                </ol>
-
-                <div class="total-text">
-                    <p>Total: </p>
-                    <div class="block-checkout">
-                        <span id="total-price"></span>
-                        <a href="{% url 'checkout' %}" id="checkout-button" style="text-decoration: none"></a>
-                    </div>
-                </div>
+        <div class="cart" style="padding-right: 20px;">
+            <i class="bi bi-cart4" id="main-cart" style="display: inline-block; margin-bottom: -10px"></i>
+            <div class="total-text">
+                <span id="items">Items</span>
+                <span id="items-basket" style="display: inline-block; padding-bottom: 1px"></span>
             </div>
         </div>
-        <div class="wrap-modal" id="myModal">
-            <div class="modal-shopping-cart">
-                <div class="header-title">
-                    <h3 style="overflow: hidden; font-size: 20px; white-space: nowrap; text-overflow: ellipsis;; ">
-                        Shopping Cart
-                    </h3>
-                    <span class="x-mark" id="shopping-cart-x-mark">
-                        <i class="fa-solid fa-xmark fa-xl"></i>
-                    </span>
-                </div>
-                <div class="shopping-cart-content">
-                    <div class="cart-block">
-                        <ul class="cart-list">
-                            <li class="cart-list-item">
-                                <div class="cart-product">
-                                    <div class="cart-product-body">
-                                        <a class="cart-product-image" href="#">
-                                            <img class="product-image">
-                                        </a>
-                                        <div class="cart-product-main" style="flex-grow: 1;">
-                                            <a href="" class="cart-product-title"></a>
-                                        </div>
-                                        <button class="button-popup-delete">
-                                            <span><i class="fa-solid fa-ellipsis-vertical"
-                                                     style="color: #3e77aa;"></i></span>
-                                        </button>
-                                    </div>
-                                    <div class="cart-product-footer">
-                                        <div class="cart-counter">
-                                            <button class="sub-item"><span><i
-                                                    class="fa-solid fa-minus fa-xl"></i></span>
-                                            </button>
-                                            <input type="text" value="1" _size_medium class="cart-counter-input">
-                                            <button class="add-item"><span><i class="fa-solid fa-plus fa-xl"></i></span>
-                                            </button>
-                                        </div>
-                                        <div class="cart-product-coast">
-                                            <p class="cart-product-price">2999<span>$</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="cart-receipt">
-                            <div class="cart-receipt-sum">
-                                <p class="cart-receipt-label" style="font-size: 20px">Итого</p>
-                                <span><span class="sum-currency"
-                                            style="margin-left: auto; font-size: 20px;">$</span></span>
-                            </div>
-                            <a href="{% url 'checkout' %}"><span id="checkout-button"
-                                                                 style="font-size: 18px; font-weight: 500; height: 48px; line-height: 48px"> Оформить заказ </span></a>
-                        </div>
-                    </div>
+        <div id="cart-items">
+            <ol id="list-item">
+            </ol>
+
+            <div class="total-text">
+                <p>Total: </p>
+                <div class="block-checkout">
+                    <span id="total-price"></span>
+                    <a href="{% url 'checkout' %}" id="checkout-button" style="text-decoration: none"></a>
                 </div>
             </div>
         </div>

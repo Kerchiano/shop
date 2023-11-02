@@ -9,7 +9,8 @@
     <div class="container">
         <ul style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;'>
             {% for object in object_list %}
-                <li class="item" data-price={{ object.price }} data-name={{ object.name }}>
+                <li class="item" data-price={{ object.price }} data-image={{ object.image.url }}
+                    data-name={{ object.name }}>
                     <h4 data-product-id={{ object.slug }}></h4>
                     <img class="contain" src="{{ object.image.url }}" alt="Card image cap">
                     <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>

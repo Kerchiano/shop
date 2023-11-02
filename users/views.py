@@ -5,11 +5,8 @@ from django.contrib import messages
 from django.views.generic import FormView
 
 from electron.models import Categories
-#
 from users.forms import SignUpForm
 
-
-#
 
 class MyLoginView(LoginView):
 
