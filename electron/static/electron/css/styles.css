@@ -671,7 +671,6 @@ img {
 }
 
 .deliveries-city {
-    margin-top: 20px;
     width: 69%;
     height: 12%;
     background-color: white;
@@ -1236,4 +1235,42 @@ hr {
 
 .block-content-payment {
     list-style-type: none;
+}
+
+.userData {
+    margin-top: 25px;
+    line-height: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.personInfo {
+    margin-top: 20px;
+    display: flex;
+    border-radius: 8px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.personInfo span {
+    color: black;
+}
+
+#personCircle {
+    color: black;
+    margin-left: 2%;
+}
+
+#pencilEdit {
+    color: black;
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
 }

@@ -20,25 +20,25 @@ $(document).ready(function () {
         $(".list-orders").append(`<li class="order"><div class="checkout-product">
                             <a href="#" class="checkout-product-link">
                                 <figure class="checkout-product-picture">
-                                    <img class="checkout-product-image" src="${data[value].image}" alt="">
+                                    <img class="checkout-product-image" id="image" src="${data[value].image}" alt="">
                                 </figure>
                             </a>
                             <div class="checkout-product-description">
                                 <div class="checkout-product-label">
                                     <a href="#" class="checkout-product-link"><span
-                                            class="checkout-product-name">${data[value].name}</span></a>
+                                            class="checkout-product-name" id="product">${data[value].name}</span></a>
                                 </div>
                                 <div class="checkout-product-cost">
                                     <div class="checkout-product-count">
-                                        <span class="checkout-product-price">
+                                        <span class="checkout-product-price" id="price">
                                         ${data[value].price + ' $'}
                                         </span>
-                                        <span class="checkout-product-quantity">
+                                        <span class="checkout-product-quantity" id="qty">
                                         ${' x ' + data[value].quantity + ' ед.'}</span>
                                     </div>
                                 </div>
                                 <div class="checkout-product-amount">
-                                    <span class="checkout-product-digit">${data[value].quantity * data[value].price + " $"}</span>
+                                    <span class="checkout-product-digit" id="total">${data[value].quantity * data[value].price + " $"}</span>
                                 </div>
                             </div>
                         </div>
@@ -461,68 +461,99 @@ $('.block-content-payment').append(`<li class="checkout-payment-offline">
                             <span class="radio-payment-span">Оплатить при получении</span>
                         </div>
                     </li>`)
-// <li class="checkout-payment-online" style="border: none">
-//     <div class="block-radio-payment">
-//         <input class="checkout-radio-payment" type="radio" style="margin-right: 8px;">
-//         <label class="checkout-variant-payment"></label>
-//         <span class="radio-payment-span">Оплатить сейчас</span>
-//     </div>
-//     <div class="block-inserted-list">
-//         <ul class="inserted-list">
-//         </ul>
-//     </div>
-// </li>`)
 
-
-// function payment_online_func() {
-//     $('.inserted-list').append(`<li class="inserted-list-1">
-//         <div class="checkout-variant-inner">
-//             <div class="checkout-variant-body">
-//                 <input class="checkout-insert-radio-payment" type="radio">
-//                     <label class="checkout-insert-variant-payment"></label>
-//                     <span class="radio-insert-payment-span">Картой онлайн</span>
-//             </div>
-//         </div>
-//     </li>
-//     <li class="inserted-list-2">
-//         <div class="checkout-variant-inner">
-//             <div class="checkout-variant-body">
-//                 <input class="checkout-insert-radio-payment" type="radio">
-//                     <label class="checkout-insert-variant-payment"></label>
-//                     <span class="radio-insert-payment-span">Google Pay</span>
-//                     <img class="img-google-pay"
-//                          src="https://cdn-icons-png.flaticon.com/512/6124/6124998.png" alt=""/>
-//             </div>
-//         </div>
-//     </li>`)
-// }
-
-// $('.checkout-payment-online').children('div').children('input').on('click', function () {
-//     $('.inserted-list li').remove()
-//     $(this).parent().parent().css({'border': '1px solid #00a046'})
-//     const selectorOffline = $('.checkout-payment-offline')
-//     selectorOffline.children('div').children('input').prop('checked', false)
-//     selectorOffline.css({'border': 'none'})
-//     payment_online_func()
-//     let insertedList = localStorage.getItem('insertList')
-//     let selectorList1 = $('.inserted-list-1')
-//     if (insertedList === selectorList1.attr('class') || insertedList === null) {
-//         selectorList1.children('div').children('div').children('input').prop('checked', true)
-//         localStorage.setItem('insertList', selectorList1.attr('class'))
-//         selectorList1.children('div').removeClass()
-//         selectorList1.children('div').addClass('checkout-variant-inner-selected')
-//     }
-// })
-// $('.checkout-payment-offline').children('div').children('input').on('click', function () {
-//     $('.inserted-list li').remove()
-//     localStorage.removeItem('insertList')
-//     $(this).prop('checked', true)
-//     $(this).parent().parent().css({'border': '1px solid #00a046'})
-//     const selectorOnline = $('.checkout-payment-online')
-//     selectorOnline.children('div').children('input').prop('checked', false)
-//     selectorOnline.css({'border': 'none'})
-// })
+// $('#formOrder').submit(function (e) {
+//     e.preventDefault();
+//     let formData = $(this).serializeArray();
+//     console.log(formData)
+//     const location = $('#location').text()
+//     const postOfficeAddress = $('#postOfficeAddress').text()
+//     const amount = $('#amount').text()
+//     const orderItems = JSON.parse(localStorage.getItem('data'))
+//     formData.push({name: 'location', value: location}, {
+//         name: 'postOfficeAddress',
+//         value: postOfficeAddress
+//     }, {name: 'amount', value: amount}, {name: 'orderItems', value: orderItems})
+//     // console.log(formData[8].value['tv3'].name)
+//     console.log(formData)
+//     formData = $.param(formData)
+//     console.log(formData)
 //
-// $('.checkout-insert-radio-payment').on('click', function () {
-//     $(this).css({'width': '18px'})
-// })
+//     $.ajax({
+//         url: 'http://127.0.0.1:8000/checkout',
+//         type: 'POST',
+//         data: formData,
+//         success: function (response) {
+//             alert('Your form has been sent successfully.');
+//         },
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             alert('Your form was not sent successfully.');
+//         }
+//     });
+// });
+
+$('#formOrder').submit(function (e) {
+    e.preventDefault();
+    let formData = $(this).serializeArray();
+    console.log(formData)
+    const location = $('#location').text()
+    const postOfficeAddress = $('#postOfficeAddress').text()
+    const amount = $('#amount').text()
+    const orderItems = JSON.parse(localStorage.getItem('data'))
+    formData.push({name: 'location', value: location}, {
+        name: 'postOfficeAddress',
+        value: postOfficeAddress
+    }, {name: 'amount', value: amount}, {name: 'orderItems', value: orderItems})
+    localStorage.setItem('order', JSON.stringify(formData))
+    $(this).css({'display': 'none'})
+    let selectPersonInfo = $('.personInfo')
+    if (selectPersonInfo.is(':empty')) {
+        selectPersonInfo.css({'border': '1px solid #00a046', 'padding': '10px 0'}).append(`<i class="bi fa-2x bi-person-circle" id="personCircle"></i>
+         <div class="userInfo"><div><span> ${formData[1].value} ${formData[2].value}</span></div>
+         <div><span>${formData[4].value}</span></div></div>
+         <i class="bi fa-lg bi-pencil" id="pencilEdit"></i>
+    `)
+    } else {
+        $('.blockPersonInfo').css({'display': 'block'})
+        selectPersonInfo.empty()
+        selectPersonInfo.css({'border': '1px solid #00a046', 'padding': '10px 0'}).append(`<i class="bi fa-2x bi-person-circle" id="personCircle"></i>
+         <div class="userInfo"><div><span> ${formData[1].value} ${formData[2].value}</span></div>
+         <div><span>${formData[4].value}</span></div></div>
+         <i class="bi fa-lg bi-pencil" id="pencilEdit"></i>
+    `)
+    }
+});
+
+$('.button-checkout').on('click', function (e) {
+    e.preventDefault();
+    let formData = JSON.parse(localStorage.getItem('order'))
+    formData[8] = {name: 'orderItems', value: JSON.stringify(formData[8].value)}
+    console.log(formData)
+    formData = $.param(formData)
+    // console.log(formData)
+    $.ajax({
+        url: 'http://127.0.0.1:8000/checkout',
+        // url: "{% url 'checkout' %}",
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            alert('Your form has been sent successfully.');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Your form was not sent successfully.');
+        }
+    });
+})
+
+let order = JSON.parse(localStorage.getItem('order'))
+if (order !== null) {
+    $('input[name="firstname"]').val(order[1].value)
+    $('input[name="lastname"]').val(order[2].value)
+    $('input[name="email"]').val(order[3].value)
+    $('input[name="phone_number"]').val(order[4].value)
+}
+
+$('.personInfo').on('click', function () {
+    $('.blockPersonInfo').css({'display': 'none'})
+    $('#formOrder').css({'display': 'block'})
+})

@@ -32,9 +32,6 @@ class RegisterView(FormView, SuccessMessageMixin):
 
     def form_valid(self, form):
         form.save()
-        # user = form.save()
-        # if user:
-        #     login(self.request, user)
         messages.success(self.request, form.cleaned_data['name'] + " successfully created")
         return super(RegisterView, self).form_valid(form)
 
