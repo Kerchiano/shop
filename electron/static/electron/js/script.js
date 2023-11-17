@@ -201,21 +201,15 @@ $(document).ready(function () {
         }
     });
 
-
-    if (count === '1') {
+    if ((count % 10 === 1 && count % 100 !== 11)) {
         $(".orders-count").text(count + " товар на сумму");
-    } else if (count % 10 === 1 && count > 11) {
-        $(".orders-count").text(count + " товар на сумму");
-    } else if (count < 5 && count > 0) {
-        $(".orders-count").text(count + " товара на сумму");
-    } else if (count < 21) {
-        $(".orders-count").text(count + " товаров на сумму");
-    } else if (count % 10 < 5) {
+    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
         $(".orders-count").text(count + " товара на сумму");
     } else {
         $(".orders-count").text(count + " товаров на сумму");
     }
     $(".orders-price").text(totalPrice + "$")
+
 
     const location_city = localStorage.getItem('city-location')
 
@@ -306,6 +300,9 @@ $('.button-apply').on("click", function () {
         'background-color': '#eee',
         'cursor': 'default'
     })
+    $('.search-delivery').val('')
+    $('.post-office').css({'display': 'none'})
+    $('ul .autocomplete-item').remove()
     localStorage.removeItem('number_address')
     $('.button-choice-place').children('span').empty()
 
@@ -354,9 +351,6 @@ $('.button-choice-place').on("click", function (event) {
     const post_office = $('.post-office')
     if (post_office.css('display') === 'none') {
         post_office.css({'display': 'block'})
-        event.preventDefault();
-        const n = $(document).height();
-        $('html, body').animate({scrollTop: n}, 50);
     } else {
         post_office.css({'display': 'none'})
     }
@@ -434,11 +428,6 @@ function Filter_list(value) {
     });
 }
 
-$(".region-location").keyup(debounce(e => {
-    Filter_list(e.target.value);
-}, 500));
-
-
 function debounce(func, wait, immediate) {
     let timeout;
     return function () {
@@ -454,6 +443,11 @@ function debounce(func, wait, immediate) {
     };
 }
 
+$(".region-location").keyup(debounce(e => {
+    Filter_list(e.target.value);
+}, 500));
+
+
 $('.block-content-payment').append(`<li class="checkout-payment-offline">
                         <div class="block-radio-payment" style="padding-bottom: 10px">
                             <input class="checkout-radio-payment" checked type="radio" style="margin-right: 8px">
@@ -462,98 +456,154 @@ $('.block-content-payment').append(`<li class="checkout-payment-offline">
                         </div>
                     </li>`)
 
-// $('#formOrder').submit(function (e) {
-//     e.preventDefault();
-//     let formData = $(this).serializeArray();
-//     console.log(formData)
-//     const location = $('#location').text()
-//     const postOfficeAddress = $('#postOfficeAddress').text()
-//     const amount = $('#amount').text()
-//     const orderItems = JSON.parse(localStorage.getItem('data'))
-//     formData.push({name: 'location', value: location}, {
-//         name: 'postOfficeAddress',
-//         value: postOfficeAddress
-//     }, {name: 'amount', value: amount}, {name: 'orderItems', value: orderItems})
-//     // console.log(formData[8].value['tv3'].name)
-//     console.log(formData)
-//     formData = $.param(formData)
-//     console.log(formData)
-//
-//     $.ajax({
-//         url: 'http://127.0.0.1:8000/checkout',
-//         type: 'POST',
-//         data: formData,
-//         success: function (response) {
-//             alert('Your form has been sent successfully.');
-//         },
-//         error: function (jqXHR, textStatus, errorThrown) {
-//             alert('Your form was not sent successfully.');
-//         }
-//     });
-// });
-
+let userData = JSON.parse(localStorage.getItem('userData'))
+let userId = JSON.parse(localStorage.getItem('userId'));
 $('#formOrder').submit(function (e) {
     e.preventDefault();
     let formData = $(this).serializeArray();
-    console.log(formData)
+    formData = [formData[0]]
     const location = $('#location').text()
     const postOfficeAddress = $('#postOfficeAddress').text()
     const amount = $('#amount').text()
-    const orderItems = JSON.parse(localStorage.getItem('data'))
+    let orderItems = JSON.parse(localStorage.getItem('data'))
+    console.log(orderItems)
+    let orIt = {}
+    for (let i in orderItems) {
+        orIt[i] = {'quantity': orderItems[i].quantity}
+    }
+
     formData.push({name: 'location', value: location}, {
         name: 'postOfficeAddress',
         value: postOfficeAddress
-    }, {name: 'amount', value: amount}, {name: 'orderItems', value: orderItems})
+    }, {name: 'amount', value: amount}, {name: 'orderItems', value: orIt})
     localStorage.setItem('order', JSON.stringify(formData))
     $(this).css({'display': 'none'})
     let selectPersonInfo = $('.personInfo')
     if (selectPersonInfo.is(':empty')) {
         selectPersonInfo.css({'border': '1px solid #00a046', 'padding': '10px 0'}).append(`<i class="bi fa-2x bi-person-circle" id="personCircle"></i>
-         <div class="userInfo"><div><span> ${formData[1].value} ${formData[2].value}</span></div>
-         <div><span>${formData[4].value}</span></div></div>
+         <div class="userInfo"><div><span> ${userData.name} ${userData.last_name}</span></div>
+         <div><span>${userData.email}</span></div></div>
+         <div style="margin-left: auto; margin-right: 10%"><span>${userData.phone_number}</span></div>
          <i class="bi fa-lg bi-pencil" id="pencilEdit"></i>
     `)
     } else {
         $('.blockPersonInfo').css({'display': 'block'})
         selectPersonInfo.empty()
         selectPersonInfo.css({'border': '1px solid #00a046', 'padding': '10px 0'}).append(`<i class="bi fa-2x bi-person-circle" id="personCircle"></i>
-         <div class="userInfo"><div><span> ${formData[1].value} ${formData[2].value}</span></div>
-         <div><span>${formData[4].value}</span></div></div>
+         <div class="userInfo"><div><span> ${userData.name} ${userData.last_name}</span></div>
+         <div><span>${userData.email}</span></div></div>
+         <div style="margin-left: auto; margin-right: 10%"><span>${userData.phone_number}</span></div>
          <i class="bi fa-lg bi-pencil" id="pencilEdit"></i>
     `)
     }
 });
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+$('.userData').on('click', function () {
+    let name = $('input[name="firstname"]').val()
+    let lastName = $('input[name="lastname"]').val()
+    let email = $('input[name="email"]').val()
+    let phoneNumber = $('input[name="phone_number"]').val()
+    userData = {'email': email, 'last_name': lastName, 'name': name, 'phone_number': phoneNumber}
+    localStorage.setItem('userData', JSON.stringify(userData))
+})
+
 $('.button-checkout').on('click', function (e) {
     e.preventDefault();
     let formData = JSON.parse(localStorage.getItem('order'))
-    formData[8] = {name: 'orderItems', value: JSON.stringify(formData[8].value)}
-    console.log(formData)
-    formData = $.param(formData)
-    // console.log(formData)
+    formData[4] = {name: 'orderItems', value: JSON.stringify(formData[4].value)}
+    if (userId === null) {
+        formData.push(
+            {name: 'name', value: userData.name},
+            {name: 'last_name', value: userData.last_name},
+            {name: 'email', value: userData.email},
+            {name: 'phone_number', value: userData.phone_number}
+        )
+    }
     $.ajax({
         url: 'http://127.0.0.1:8000/checkout',
-        // url: "{% url 'checkout' %}",
         type: 'POST',
         data: formData,
         success: function (response) {
-            alert('Your form has been sent successfully.');
+            localStorage.clear();
+            $('.wrap-modal-success').css({'display': 'block'})
+            $('#button-OK').on('click', function () {
+                window.location.href = '/';
+            })
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert('Your form was not sent successfully.');
+            $('.wrap-modal-error').css({'display': 'block'})
+            $('#button-Error').on('click', function () {
+                $('.wrap-modal-error').css({'display': 'none'})
+            })
         }
     });
 })
 
-let order = JSON.parse(localStorage.getItem('order'))
-if (order !== null) {
-    $('input[name="firstname"]').val(order[1].value)
-    $('input[name="lastname"]').val(order[2].value)
-    $('input[name="email"]').val(order[3].value)
-    $('input[name="phone_number"]').val(order[4].value)
+if (userData !== null) {
+    $('input[name="firstname"]').val(userData.name)
+    $('input[name="lastname"]').val(userData.last_name)
+    $('input[name="email"]').val(userData.email)
+    $('input[name="phone_number"]').val(userData.phone_number)
 }
 
 $('.personInfo').on('click', function () {
     $('.blockPersonInfo').css({'display': 'none'})
     $('#formOrder').css({'display': 'block'})
 })
+
+
+$('#loginForm').submit(function (event) {
+    event.preventDefault();
+
+    const email = $('#id_username').val();
+    const password = $('#id_password').val();
+    $.ajax({
+        url: 'http://127.0.0.1:8000/login/',
+        type: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        contentType: 'application/json',
+        data: JSON.stringify({email: email, password: password}),
+        success: function (data) {
+            const userId = data.userId;
+            window.location.href = '/';
+            console.log('Успешный вход. Идентификатор пользователя:', userId);
+
+            localStorage.setItem('userId', userId);
+        },
+    });
+});
+
+if (userId) {
+    $.ajax({
+        url: `http://127.0.0.1:8000/get_user_data/${userId}/`,
+        method: 'GET',
+        dataType: 'json',
+        success: function (userData) {
+            console.log('Получены данные пользователя:', userData);
+            localStorage.setItem('userData', JSON.stringify(userData))
+        },
+        error: function (error) {
+            console.error('Ошибка при получении данных:', error);
+        }
+    });
+} else {
+    console.error('Айди пользователя не найден в локальном хранилище.');
+}
+

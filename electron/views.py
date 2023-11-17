@@ -1,5 +1,4 @@
 import json
-from django.contrib import messages
 from django.views.generic import ListView, TemplateView, DetailView
 from electron.models import Product, Categories, Order, OrderItem
 
@@ -45,33 +44,38 @@ class ProductDetail(DetailView):
 class Checkout(TemplateView):
     template_name = 'electron/checkout.html'
 
+    def set_anonymous_user_id(self):
+        if self.request.user.is_anonymous:
+            self.request.user.id = 0
+
     def post(self, *args, **kwargs):
-        user_id = self.request.user.id
-        # if self.request.user.is_authenticated:
-        # user_id = self.request.user.id
-        # else:
-        #     user_id = 'Anon'
-
         data = self.request.POST
-        orderItems = json.loads(data['orderItems'])
+        if self.request.user.is_authenticated:
+            user_id = self.request.user.id
+            user = User.objects.get(id=user_id)
+            order = Order(user_id=user_id, firstname=user.name, lastname=user.last_name,
+                          location=data['location'],
+                          postOfficeAddress=data['postOfficeAddress'], phone_number=user.phone_number,
+                          email=user.email, amount=data['amount'])
+            order.save()
+        else:
+            order = Order(user_id=None, firstname=data['name'], lastname=data['last_name'],
+                          location=data['location'],
+                          postOfficeAddress=data['postOfficeAddress'], phone_number=data['phone_number'],
+                          email=data['email'], amount=data['amount'])
+            order.save()
 
-        order = Order(user_id=user_id, firstname=data['firstname'], lastname=data['lastname'],
-                      location=data['location'],
-                      postOfficeAddress=data['postOfficeAddress'], phone_number=data['phone_number'],
-                      email=data['email'], amount=data['amount'])
-        order.save()
-        for i in orderItems:
-            name = orderItems[i]['name']
-            price = orderItems[i]['price']
-            image = orderItems[i]['image'][6:]
-            quantity = orderItems[i]['quantity']
+        order_items = json.loads(data['orderItems'])
+        for i in order_items:
+            product = Product.objects.get(id=i)
+            product_id = i
+            name = product.name
+            price = product.price
+            image = product.image
+            quantity = order_items[i]['quantity']
             total = price * quantity
-            orderItemsDB = OrderItem(order=order, product=name, price=price, image=image, quantity=quantity,
-                                     total=total)
-            orderItemsDB.save()
+            order_item_db = OrderItem(order=order, product_id=product_id, name=name, price=price, image=image,
+                                      quantity=quantity,
+                                      total=total)
+            order_item_db.save()
         return self.get(*args, **kwargs)
-
-    # def form_valid(self, form):
-    #     form.save()
-    #     messages.success(self.request, form.cleaned_data['name'] + " successfully created")
-    #     return super(Checkout, self).form_valid(form)

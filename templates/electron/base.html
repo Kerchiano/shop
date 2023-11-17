@@ -14,15 +14,16 @@
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <title>Todo List</title>
 </head>
-
-<body>
-<header class="header">
+<header class="header" style="color: #221f1f">
     <nav class="navbar navbar-dark bg-dark">
         <div class="menu-block">
             <a href="{% url 'home' %}"><i class="bi bi-house-fill"></i> Home</a>
-            {% block header %}
-
-            {% endblock header %}
+            {#            {% block header %}#}
+            {##}
+            {#            {% endblock header %}#}
+            <div class="catalog">
+                <i class="fa-solid fa-bars fa-xl" style="color: #ffffff;"></i>
+            </div>
         </div>
         <div class="form-inline my-2 my-lg-0" style="padding-left: 180px">
             {% if request.user.is_authenticated %}
@@ -54,26 +55,21 @@
         </div>
     </nav>
 </header>
-<main>
-    <div class=" container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        {% block content %}
-        {% endblock content %}
-    </div>
-</main>
+<body>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% block content %}
+{% endblock content %}
+<script src={% static "electron/js/script.js" %}></script>
+</body>
 <footer class="footer">
     <div class="container">
         <p>&copy; Copyright {% now "Y" %} by Berserkletron</p>
     </div>
 </footer>
-<script src={% static "electron/js/script.js" %}></script>
-</body>
-
 </html>

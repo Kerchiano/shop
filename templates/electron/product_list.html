@@ -2,7 +2,7 @@
 {% block header %}
     {% for object in category_list %}
 
-        <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
+        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
     {% endfor %}
 {% endblock header %}
 {% block content %}
@@ -11,7 +11,7 @@
             {% for object in object_list %}
                 <li class="item" data-price={{ object.price }} data-image={{ object.image.url }}
                     data-name={{ object.name }}>
-                    <h4 data-product-id={{ object.slug }}></h4>
+                    <h4 data-product-id={{ object.id }}></h4>
                     <img class="contain" src="{{ object.image.url }}" alt="Card image cap">
                     <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>
                     <h3>{{ object.price }}₴</h3>

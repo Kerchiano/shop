@@ -1,7 +1,7 @@
 {% extends 'electron/base.html' %}
 {% block header %}
     {% for object in category_list %}
-        <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
+        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
     {% endfor %}
 {% endblock header %}
 {% block content %}

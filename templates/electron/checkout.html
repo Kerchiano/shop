@@ -14,8 +14,6 @@
     {#    <link rel="shortcut icon" href="#"/>#}
 </head>
 <body>
-{#<form style="appearance: none; max-height: 600px;" action="http://127.0.0.1:8000/" method="POST">#}
-{#    {% csrf_token %}#}
 <div class="block-order-checkout" style="width: 90%; height: 100%; margin-left: 4%">
     <h1 style="color: black; display: inline-block; margin: 10px 0 0 0">BERSERKLETRON</h1>
     <br>
@@ -192,7 +190,7 @@
                                         <i class="fa-solid fa-greater-than fa-rotate-90"
                                            style="margin-left: auto; margin-right: 15px; height: 15px; width: 15px"></i>
                                     </button>
-                                    <div class="post-office">
+                                    <div class="post-office" id="postOffice">
                                         <input class="search-delivery" id="value"
                                                placeholder="Введите адрес или номер отделения" type="text"/>
                                         <ul class="post-office-list">
@@ -216,12 +214,12 @@
                 <ul class="block-content-payment">
                 </ul>
             </div>
+            <div>
+                <span class="header-title-recipient">Отримувач замовлення</span>
+            </div>
             <form id="formOrder" style="appearance: none; max-height: 600px;
             " method="POST">
                 {% csrf_token %}
-                <div>
-                    <span class="header-title-recipient">Отримувач замовлення</span>
-                </div>
                 <div class="input-field">
                     <div style="display: inline-block; width: 49%">
                         <label for="firstname"
@@ -266,10 +264,31 @@
             <div class="blockPersonInfo">
                 <div class="personInfo"></div>
             </div>
+            <div class="wrap-modal-success" id="myModal">
+                <div class="modal-success">
+                    <div style="display: flex;">
+                        <i class="fas fa-check-circle" id="check-circle"></i>
+                    </div>
+                    <div style="text-align: center; font-size: 28px; color: black">
+                        <span>Successfully placed your order</span>
+                    </div>
+                    <button id="button-OK">OK</button>
+                </div>
+            </div>
+            <div class="wrap-modal-error" id="myModal">
+                <div class="modal-success">
+                    <div style="display: flex;">
+                        <i class="fa-solid fa-circle-xmark" id="x-circle"></i>
+                    </div>
+                    <div style="text-align: center; font-size: 28px; color: black">
+                        <span>Your order was not successfully placed</span>
+                    </div>
+                    <button id="button-Error" style="background-color: #c52020">ERROR</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-{#</form>#}
 <script src={% static "electron/js/script.js" %}></script>
 </body>
 </html>

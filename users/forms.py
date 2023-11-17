@@ -6,6 +6,3 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'name', 'last_name', 'phone_number',)
-
-    def __str__(self):
-        return self.name

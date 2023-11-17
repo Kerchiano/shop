@@ -1,7 +1,23 @@
 {% extends 'electron/base.html' %}
 {% load static %}
 {% block header %}
-    {% for object in category_list %}
-        <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
-    {% endfor %}
+    {#    {% for object in category_list %}#}
+    {#        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>#}
+    {#    {% endfor %}#}
 {% endblock header %}
+{% block content %}
+    <div class="containerContent">
+        <div class="MainPageCatalog">
+            <ul style="list-style: none">
+                {% for object in category_list %}
+                    <li class="category_list">
+                        <a href="{% url 'category' category_slug=object.slug %}"
+                           class="category_link"><span class="category_title">{{ object.name }}</span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="MainPageInfo">
+        </div>
+    </div>
+{% endblock content %}
