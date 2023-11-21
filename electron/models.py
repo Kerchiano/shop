@@ -7,6 +7,7 @@ User = settings.AUTH_USER_MODEL
 class Categories(models.Model):
     slug = models.SlugField(max_length=255, blank=True, unique=True, db_index=True, verbose_name="URL")
     name = models.CharField(max_length=30)
+    icon = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -15,9 +16,33 @@ class Categories(models.Model):
         return self.name
 
 
+class Brand(models.Model):
+    slug = models.SlugField(max_length=255, blank=True, unique=False, db_index=True, verbose_name="URL")
+    name = models.CharField(max_length=30)
+    logo = models.ImageField(upload_to='images/', blank=True)
+    category = models.ManyToManyField(Categories)
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    slug = models.SlugField(max_length=255, blank=True, unique=False, db_index=True, verbose_name="URL")
+    category = models.ForeignKey("Categories", on_delete=models.CASCADE)
+    name = models.CharField(max_length=30, blank=True)
+    image = models.ImageField(upload_to='images/', blank=True)
+
+    class Meta:
+        verbose_name_plural = 'subcategories'
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     id = models.IntegerField(primary_key=True)
     category = models.ForeignKey("Categories", on_delete=models.CASCADE)
+    sub_category = models.ForeignKey("SubCategory", on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(max_length=255, blank=True, unique=True, db_index=True, verbose_name="URL")
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=255)
