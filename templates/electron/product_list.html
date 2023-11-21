@@ -1,25 +1,25 @@
-{% extends 'electron/base.html' %}
-{% block header %}
-    {% for object in category_list %}
-
-        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
-    {% endfor %}
-{% endblock header %}
-{% block content %}
-    <div class="container">
-        <ul style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;'>
-            {% for object in object_list %}
-                <li class="item" data-price={{ object.price }} data-image={{ object.image.url }}
-                    data-name={{ object.name }}>
-                    <h4 data-product-id={{ object.id }}></h4>
-                    <img class="contain" src="{{ object.image.url }}" alt="Card image cap">
-                    <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>
-                    <h3>{{ object.price }}₴</h3>
-                    <button class='glowing-btn' style="font-size: 0.9em; width: 194px"><span
-                            class='glowing-txt'>Ку<span
-                            class='faulty-letter'>пи</span>ть</span></button>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endblock content %}
+{#{% extends 'electron/base.html' %}#}
+{#{% block header %}#}
+{#    {% for object in category_list %}#}
+{##}
+{#        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>#}
+{#    {% endfor %}#}
+{#{% endblock header %}#}
+{#{% block content %}#}
+{#    <div class="container">#}
+{#        <ul style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;'>#}
+{#            {% for object in object_list %}#}
+{#                <li class="item" data-price={{ object.price }} data-image={{ object.image.url }}#}
+{#                    data-name={{ object.name }}>#}
+{#                    <h4 data-product-id={{ object.id }}></h4>#}
+{#                    <img class="contain" src="{{ object.image.url }}" alt="Card image cap">#}
+{#                    <a href="{% url 'detail' detail_slug=object.slug %}" class="product_name">{{ object.name }}</a>#}
+{#                    <h3>{{ object.price }}₴</h3>#}
+{#                    <button class='glowing-btn' style="font-size: 0.9em; width: 194px"><span#}
+{#                            class='glowing-txt'>Ку<span#}
+{#                            class='faulty-letter'>пи</span>ть</span></button>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#    </div>#}
+{#{% endblock content %}#}

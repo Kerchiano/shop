@@ -1,6 +1,6 @@
 import json
 from django.views.generic import ListView, TemplateView, DetailView
-from electron.models import Product, Categories, Order, OrderItem
+from electron.models import Product, Categories, Order, OrderItem, Brand, SubCategory
 
 from users.models import User
 
@@ -15,16 +15,27 @@ class Home(TemplateView):
         return context
 
 
-class ProductList(ListView):
+class BrandProductList(ListView):
     model = Product
+    template_name = 'electron/brand.html'
 
     def get_queryset(self):
-        return Product.objects.filter(category__slug=self.kwargs['category_slug'])
+        return Product.objects.filter(brand__slug=self.kwargs['brand_slug'])
+
+
+class BrandSubCategory(ListView):
+    model = Brand
+    template_name = 'electron/brand_and_sub_category.html'
+    context_object_name = 'brand_list'
+
+    def get_queryset(self):
+        return Brand.objects.filter(category__slug=self.kwargs['category_slug'])
 
     def get_context_data(self, **kwargs):
-        context = super(ProductList, self).get_context_data(**kwargs)
+        context = super(BrandSubCategory, self).get_context_data(**kwargs)
 
-        context['category_list'] = Categories.objects.all()
+        sub_category = SubCategory.objects.filter(category__slug=self.kwargs['category_slug'])
+        context['sub_category_list'] = sub_category
         return context
 
 

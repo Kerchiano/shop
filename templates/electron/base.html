@@ -17,13 +17,13 @@
 <header class="header" style="color: #221f1f">
     <nav class="navbar navbar-dark bg-dark">
         <div class="menu-block">
-            <a href="{% url 'home' %}"><i class="bi bi-house-fill"></i> Home</a>
             {#            {% block header %}#}
             {##}
             {#            {% endblock header %}#}
             <div class="catalog">
                 <i class="fa-solid fa-bars fa-xl" style="color: #ffffff;"></i>
             </div>
+            <a href="{% url 'home' %}"><i class="bi bi-house-fill"></i> Home</a>
         </div>
         <div class="form-inline my-2 my-lg-0" style="padding-left: 180px">
             {% if request.user.is_authenticated %}

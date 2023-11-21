@@ -11,8 +11,10 @@
             <ul style="list-style: none">
                 {% for object in category_list %}
                     <li class="category_list">
-                        <a href="{% url 'category' category_slug=object.slug %}"
-                           class="category_link"><span class="category_title">{{ object.name }}</span></a>
+                        <i class="fas fa-{{ object.icon }}" style="width: 20px; color: #adb8c8; padding-top: 5px"></i>
+                        <a href="{% url 'category' category_slug=object.slug %}" class="category_link">
+                            <span class="category_title">{{ object.name }}</span>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
