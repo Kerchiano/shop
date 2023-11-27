@@ -51,12 +51,12 @@ $(document).ready(function () {
         $("#checkout-button").text("Оформление заказа")
     }
 
-    $(".glowing-btn").on("click", function () {
+    $(".glowing").on("click", function () {
         let button = $("#checkout-button")
-        const name = $(this).parent().data("name")
-        const price = $(this).parent().data("price")
-        const image = $(this).parent().data("image")
-        const id = $(this).parent().children("h4").data('product-id')
+        const name = $(this).parent().parent().data("name")
+        const price = $(this).parent().parent().data("price")
+        const image = $(this).parent().parent().data("image")
+        const id = $(this).parent().parent().children("h4").data('product-id')
         let product = {id: {name, price, image, quantity: 1}}
         const sub = `<span class='sub' id='${id}'>-</span>`
         const add = `<span class='add' id='${id}'>+</span>`
@@ -250,6 +250,19 @@ $(document).ready(function () {
     $(".search-delivery").keyup(debounce(e => {
         Filter_list_2(e.target.value);
     }, 500));
+
+    $('.item').hover(
+        function () {
+            $(this).find('.product_desc').show();
+            $(this).css({'border-bottom': 'none'});
+            $('.product_desc').css({'background-color': 'white'})
+            $('.overlay').css({'height': 'calc(100% + 140px)'})
+        },
+        function () {
+            $(this).find('.product_desc').hide();
+            $(this).css({'border-bottom': '1px solid #e9e9e9'});
+        }
+    );
 });
 
 $("#Btn").on("click", function () {

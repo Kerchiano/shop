@@ -15,12 +15,13 @@ class Home(TemplateView):
         return context
 
 
-class BrandProductList(ListView):
+class ProductList(ListView):
     model = Product
-    template_name = 'electron/brand.html'
+    template_name = 'electron/product_list.html'
+    context_object_name = 'product_list'
 
     def get_queryset(self):
-        return Product.objects.filter(brand__slug=self.kwargs['brand_slug'])
+        return Product.objects.filter(sub_category__slug=self.kwargs['sub_category'])
 
 
 class BrandSubCategory(ListView):

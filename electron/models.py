@@ -40,9 +40,8 @@ class SubCategory(models.Model):
 
 
 class Product(models.Model):
-    id = models.IntegerField(primary_key=True)
-    category = models.ForeignKey("Categories", on_delete=models.CASCADE)
     sub_category = models.ForeignKey("SubCategory", on_delete=models.CASCADE, blank=True, null=True)
+    brand = models.ForeignKey("Brand", on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(max_length=255, blank=True, unique=True, db_index=True, verbose_name="URL")
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=255)
