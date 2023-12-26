@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Computers and notebooks",
+    "slug": "computers_and_notebooks",
+    "icon": "laptop"
+  },
+  {
+    "name": "Smartphones, TV and Electronic",
+    "slug": "smartphones_tv_and_electronic",
+    "icon": "mobile"
+  },
+  {
+    "name": "Gaming",
+    "slug": "gaming",
+    "icon": "gamepad"
+  }
+]

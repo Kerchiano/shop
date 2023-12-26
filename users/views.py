@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 
-from electron.models import Categories
+from electron.models import Category
 from users.forms import SignUpForm
 from users.models import User
 
@@ -35,7 +35,6 @@ class MyLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         print(data)
-        # data = self.request.POST
 
         email = data.get('email')
         password = data.get('password')
@@ -47,7 +46,6 @@ class MyLoginView(LoginView):
             login(request, user)
 
             return JsonResponse({'userId': user.id, 'email': user.email})
-            # return redirect(reverse('home'))
         else:
             print('Неудачная аутентификация. Пользователь не найден.')
 
@@ -63,7 +61,7 @@ class MyLoginView(LoginView):
     def get_context_data(self, **kwargs):
         context = super(MyLoginView, self).get_context_data(**kwargs)
 
-        context['category_list'] = Categories.objects.all()
+        context['category_list'] = Category.objects.all()
         return context
 
 
@@ -81,5 +79,5 @@ class RegisterView(FormView, SuccessMessageMixin):
     def get_context_data(self, **kwargs):
         context = super(RegisterView, self).get_context_data(**kwargs)
 
-        context['category_list'] = Categories.objects.all()
+        context['category_list'] = Category.objects.all()
         return context

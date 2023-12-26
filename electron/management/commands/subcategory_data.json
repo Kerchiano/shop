@@ -1,0 +1,60 @@
+{
+  "Computers and notebooks": [
+    {
+      "name": "Notebooks",
+      "image": "images/noutbuki.png"
+    },
+    {
+      "name": "Computers",
+      "image": "images/kompyutery.png"
+    },
+    {
+      "name": "Monitors",
+      "image": "images/monitory.png"
+    },
+    {
+      "name": "Tablets",
+      "image": "images/planshety.png"
+    },
+    {
+      "name": "TV-cables",
+      "image": "images/kabeli-i-perekhodniki.png"
+    }
+  ],
+  "Smartphones, TV and Electronic": [
+    {
+      "name": "Smartphones",
+      "image": "images/tel.jpg"
+    },
+    {
+      "name": "TV",
+      "image": "images/televizory.jpg"
+    },
+    {
+      "name": "Tablets",
+      "image": "images/planshety.jpg"
+    },
+    {
+      "name": "Power-banks",
+      "image": "images/zaryadnye_stancii.png"
+    }
+  ],
+  "Gaming": [
+    {
+      "name": "Gaming-consoles",
+      "image": "images/igrovye_pristavki.jpg"
+    },
+    {
+      "name": "Gaming-notebooks",
+      "image": "images/igrovye_noutbuki.jpg"
+    },
+    {
+      "name": "Games",
+      "image": "images/igry.jpg"
+    },
+    {
+      "name": "Gaming-chairs",
+      "image": "images/kresla_dlya_gejmerov.jpg"
+    }
+  ]
+}

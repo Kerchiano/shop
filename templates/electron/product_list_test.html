@@ -1,0 +1,185 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block content %}
+    <div id="product-list" class="block_product_list" data-start="5" style="justify-content: center; width: 100%">
+        {% for product in products %}
+            <li class="item" data-price={{ product.price }} data-image={{ product.image.url }}
+                data-name={{ product.name }} data-brand={{ product.brand }} data-color={{ product.color }}>
+                <h4 data-product-id={{ product.id }}></h4>
+                <img class="contain" src="{{ product.image.url }}" alt="Card image cap">
+                <a href="{% url 'detail' detail_slug=product.slug %}" class="product_name">{{ product.name }}</a>
+                <div style="display: flex; align-items: center; text-align: center; justify-content: space-between">
+                    <h3 style="margin-bottom: 0; color: #f84147; font-size: 20px">{{ product.price }}₴</h3>
+                    <button class="glowing"><i class="bi bi-cart4 fa-xl" style="color:#00a046;"></i>
+                    </button>
+                </div>
+                <div style="display: flex; align-items: center; text-align: center; margin-top: 10px">
+                    <span style="color: #00a046; font-size: 12px;">Готов к отправке</span>
+                    <i class="fa-solid fa-truck"
+                       style="color: #00a046; margin-left: 10px; width: 16px; height: 16px"></i>
+                </div>
+            </li>
+        {% endfor %}
+    </div>
+    <button id="load-more" style="width: 10%; margin: 0 auto; margin-top: 20px">Load More</button>
+    <div class="containerPagination" style="width: 100%">
+                <div class="LoadingYetPages">
+                    <a id="showMore" class="showMore">
+                        <img src="{% static 'electron/images/reload.png' %}" alt="Reload" class="reloadImg">
+                        <span class="showMoreText">Показать еще 5 товаров</span>
+                    </a>
+                </div>
+            </div>
+    <div class="blockPagination"
+         style=" width: 100%; justify-content: center; align-content: center; align-items: center; margin: 0 auto">
+        <a href="?page={{ prev_page }}" class="ArrowLeft">
+            <img src="{% static 'electron/images/left.png' %}" alt="" class="ArrowImg">
+        </a>
+        <ul class="paginationList" style="margin-bottom: 0">
+            {{ paginator.page_range }}
+            {% for page in amount_pages %}
+                <li class="paginationItem" style="width: 42px; height: 41px">
+                    <a href="?page={{ page }}" class="paginationLink">{{ page }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="?page={{ next_page }}" class="ArrowRight">
+            <img src="{% static 'electron/images/next.png' %}" alt="" class="ArrowImg">
+        </a>
+    </div>
+    {% csrf_token %}
+    <script>
+    $(document).ready(function () {
+        let urlParams = new URLSearchParams(window.location.search);
+        let page = urlParams.get('page');
+        let currentUrl = window.location.href;
+
+        if (currentUrl.indexOf('page=') === -1) {
+            currentUrl += (currentUrl.indexOf('?') === -1 ? '?' : '&') + 'page=1';
+            window.history.replaceState({}, '', currentUrl);
+        }
+
+        if (page == null) {
+            $('a[href$="?page=1"]').addClass('active').css({'border-color': '#3e77aa'});
+        }
+
+        $('.paginationList').on('click', '.paginationLink', function (e) {
+            e.preventDefault();
+            const link = $(this);
+            const url = link.attr("href");
+
+            $('.paginationLink').removeClass('active').css({'border-color': ''});
+            link.addClass('active').css({'border-color': '#3e77aa'});
+
+            $("#product-list").load(url + " #product-list > *", function () {
+                window.history.pushState({}, '', url);
+            });
+        });
+
+        $('.ArrowRight').on('click', function (e) {
+            e.preventDefault();
+            let urlParams = new URLSearchParams(window.location.search);
+            let page = urlParams.get('page');
+
+            if (parseInt(page) !== 24) {
+                const link = $('.paginationLink.active').last();
+                const url = link.attr("href");
+                let arrowUrl;
+                if (url.length > 7) {
+                    arrowUrl = url.slice(0, -2) + (parseInt(link.html()) + 1).toString();
+                } else {
+                    arrowUrl = url.slice(0, -1) + (parseInt(link.html()) + 1).toString();
+                }
+                $('.paginationLink.active').removeClass('active').css({'border-color': ''});
+            $(`.paginationLink[href="${arrowUrl}"]`).addClass('active').css({'border-color': '#3e77aa'});
+            $("#product-list").load(arrowUrl + " #product-list > *", function () {
+                window.history.pushState({}, '', arrowUrl);
+            });
+            }
+        });
+
+
+        $('.ArrowLeft').on('click', function (e) {
+            e.preventDefault();
+            let urlParams = new URLSearchParams(window.location.search);
+            let page = urlParams.get('page');
+            if (parseInt(page) !== 1) {
+                const link = $('.paginationLink.active');
+                const url = link.attr("href");
+                link.removeClass('active').css({'border-color': ''});
+                let arrowUrl;
+                if (url.length > 7) {
+                    arrowUrl = url.slice(0, -2) + (parseInt(link.html()) - 1).toString();
+                } else {
+                    arrowUrl = url.slice(0, -1) + (parseInt(link.html()) - 1).toString();
+                }
+                $(`.paginationLink[href="${arrowUrl}"]`).addClass('active').css({'border-color': '#3e77aa'});
+                $("#product-list").load(arrowUrl + " #product-list > *", function () {
+                    window.history.pushState({}, '', arrowUrl);
+                });
+            }
+        })
+
+                $(`a[href$="?page=${page}"]`).addClass('active').css({'border-color': '#3e77aa'})
+        let loading = false;
+
+        {#$('#load-more').on('click', function () {#}
+        $('#showMore').on('click', function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let page = urlParams.get('page');
+            let infinityPage = page !== null ? parseInt(page) + 1: 2
+            let linkInfinity = $(`a[href$="?page=${infinityPage}"]`)
+            linkInfinity.addClass('active').css({'border-color': '#3e77aa'})
+            window.history.pushState({}, '', '?page=' + infinityPage);
+
+            if (loading) {
+                return;
+            }
+
+            loading = true;
+
+            $.ajax({
+                url: window.location.href + '&page=' + infinityPage,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-Infinite-Scroll': 'true'
+                },
+                success: function (data) {
+                    if (data.products.length > 0) {
+                        let productItem
+                        data.products.forEach(function (product) {
+                            productItem =
+                                `<li class="item"data-price =${product.price} data-image=${product.image.url}
+                data-name =${product.name} data-brand=${product.brand} data-color=${product.color}>
+                <h4 data-product-id=${product.id}></h4>
+            <img class="contain" src="${product.image}" alt="Card image cap">
+                <a href="http://127.0.0.1:8000/detail/${product.slug}" class="product_name">${product.name}</a>
+                <div style="display: flex; align-items: center; text-align: center; justify-content: space-between">
+                    <h3 style="margin-bottom: 0; color: #f84147; font-size: 20px">${product.price}₴</h3>
+                    <button class="glowing"><i class="bi bi-cart4 fa-xl" style="color:#00a046;"></i>
+                    </button>
+                </div>
+                <div style="display: flex; align-items: center; text-align: center; margin-top: 10px">
+                    <span style="color: #00a046; font-size: 12px;">Готов к отправке</span>
+                    <i class="fa-solid fa-truck"
+                       style="color: #00a046; margin-left: 10px; width: 16px; height: 16px"></i>
+                </div>
+            </li>`
+                            $('#product-list').append(productItem);
+                        })
+                        infinityPage++
+                    } else {
+                        $('#load-more').hide();
+                    }
+                    loading = false;
+                },
+                error: function (error) {
+                    console.error('Ошибка при загрузке данных:', error);
+                },
+            });
+        });
+    });
+    </script>
+{% endblock content %}

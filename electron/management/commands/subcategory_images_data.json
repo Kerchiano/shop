@@ -1,0 +1,187 @@
+{
+  "Notebooks": {
+    "Apple": [
+      "images/Apple_MacBook_Pro_16_M3.webp",
+      "images/Apple_MacBook_Pro_M3.webp",
+      "images/apple_macbook_air_13_m.webp"
+    ],
+    "ASUS": [
+      "images/asus_rog_strix.webp",
+      "images/asus_vivobook_15.webp",
+      "images/asus_zenbook.webp",
+      "images/asus_tuf_gaming.webp",
+      "images/asus_laptop.webp"
+    ],
+    "HP": [
+      "images/HP_Laptop_5s.webp",
+      "images/HP_ProBook_440_G9.webp",
+      "images/hp-8f2b8ea.webp"
+    ],
+    "Acer": [
+      "images/acer_aspire.webp",
+      "images/acer_extensa.webp",
+      "images/acer_predator.webp",
+      "images/acer_travelMate.webp"
+    ],
+    "DELL": [
+      "images/Dell_XPS_15_9530.webp",
+      "images/Dell_XPS_17_9720.webp"
+    ]
+  },
+  "Computers": {
+    "Apple": [
+      "images/Apple_Mac_Mini_M2_Pro.webp",
+      "images/Apple_M2_Ultra.webp"
+    ],
+    "ASUS": [
+      "images/ASUS_ROG_Strix_GA15DK.webp",
+      "images/ASUS_U500MA-R5300G001R.webp"
+    ],
+    "Acer": [
+      "images/acer_veriton_VX2680G.webp",
+      "images/Acer_Veriton_X2631G.webp"
+    ],
+    "Lenovo": [
+      "images/Lenovo_Legion_T5_26ARA8.webp",
+      "images/Lenovo_ThinkCentre_M93p_Tower.webp"
+    ]
+  },
+  "Monitors": {
+    "ARTLINE": [
+      "images/358825058.webp"
+    ],
+    "MSI": [
+      "images/msi_monitor.webp",
+      "images/msi_gaming_monitor.webp",
+      "images/msi_gaming_g274qpx.webp"
+    ],
+    "HUAWEI": [
+      "images/Huawei_MateView_GT.webp",
+      "images/HUAWEI_MateView_GT_Standard.webp"
+    ],
+    "HP": [
+      "images/HP_Omen_32c.webp",
+      "images/HP_Omen_32c.webp"
+    ],
+    "Acer": [
+      "images/Acer_Nitro_VG240YM3bmiipx.webp",
+      "images/HP_E27m_G4.webp"
+    ]
+  },
+  "TV-cables": {
+    "Apple": [
+      "images/Apple_USB_C_to_Lightning_Cable_1.webp",
+      "images/Apple_AV_адаптер_USB_C.webp",
+      "images/Apple_USB_C_Woven_Charge_Cable_1.webp"
+    ]
+  },
+  "Tablets": {
+    "Xiaomi": [
+      "images/Xiaomi_Pad_6.webp",
+      "images/Xiaomi_Pad_5.webp",
+      "images/Xiaomi_Pad_6_Gold.webp"
+    ],
+    "Samsung": [
+      "images/Samsung_Galaxy_Tab_S9.webp",
+      "images/Samsung_Galaxy_Tab_A8.webp"
+    ]
+  },
+  "Power-banks": {
+    "HUAWEI": [
+      "images/Huawei_SuperCharge.webp",
+      "images/Huawei_SuperCharge_Universal.webp",
+      "images/HUAWEI_iSitePower.webp"
+    ],
+    "Xiaomi": [
+      "images/Xiaomi_Mi_Power_Bank.webp",
+      "images/Mi_Powerbank_3.webp"
+    ]
+  },
+  "TV": {
+    "Nokia": [
+      "images/Nokia_Smart_TV_QLED.webp",
+      "images/NOKIA_Smart_TV_QLED_5500D.webp"
+    ],
+    "SONY": [
+      "images/Sony_KD55X75WLE.webp",
+      "images/Sony_XR65X90KR2.webp"
+    ],
+    "LG": [
+      "images/LG_OLED55C36LC.webp",
+      "images/LG_50QNED756RA.webp"
+    ],
+    "Samsung": [
+      "images/Samsung_QE55S90CAUXUA.webp",
+      "images/Samsung_UE55CU8500UXUA.webp",
+      "images/Samsung_The_Serif_QE43LS01BAUXUA.webp",
+      "images/Samsung_QE50LS01BAUXUA.webp"
+    ]
+  },
+  "Smartphones": {
+    "HUAWEI": [
+      "images/Huawei_P30_Pro.webp",
+      "images/Huawei_P40_Pro.webp"
+    ],
+    "Nokia": [
+      "images/Nokia_G22.webp",
+      "images/Nokia_G42.webp"
+    ],
+    "Xiaomi": [
+      "images/Xiaomi_Redmi_Note_12_Pro.webp",
+      "images/Xiaomi_Redmi_Note_12.webp"
+    ],
+    "SONY": [
+      "images/Sony_Xperia_1_V.webp",
+      "images/Sony_Xperia_Pro_I.webp"
+    ],
+    "LG": [
+      "images/LG_G9_G900N.webp",
+      "images/LG_G9_VELVET.webp"
+    ],
+    "Samsung": [
+      "images/Samsung_Galaxy_S23_Ultra.webp",
+      "images/Samsung_Galaxy_Fold_5.webp"
+    ],
+    "Apple": [
+      "images/Apple_iPhone_15.webp",
+      "images/Apple_iPhone_14_Pro_Max.webp"
+    ]
+  },
+  "Gaming-consoles": {
+    "RAZER": [
+      "images/Razer_Edge_Gaming_Tablet_+_Kishi.webp"
+    ],
+    "PlayStation": [
+      "images/Sony_PlayStation_5_Ultra_HD_Blu_ray.webp",
+      "images/Sony_PlayStation_5_Digital_Edition_God_of_War_Ragnarok_Bundle.webp"
+    ]
+  },
+  "Gaming-notebooks": {
+    "RAZER": [
+      "images/Razer_Book_13_EVO_Creator.webp",
+      "images/RAZER_Blade_16.webp"
+    ],
+    "Acer": [
+      "images/Acer_Nitro_5_AN517-54-72WJ.webp",
+      "images/Acer_Predator_Helios_300.webp"
+    ],
+    "ASUS": [
+      "images/ASUS_ROG_Strix_G17.webp"
+    ]
+  },
+  "Games": {
+    "PlayStation": [
+      "images/EA_SPORTS_FC_24.webp",
+      "images/The_Last_of_Us_Part_I.webp",
+      "images/Mortal_Kombat_1.webp",
+      "images/Need_for_Speed_Unbound.webp",
+      "images/Assassin's_Creed_Mirage_Launch_Edition.webp"
+    ]
+  },
+  "Gaming-chairs": {
+    "RAZER": [
+      "images/Razer_Iskur.webp",
+      "images/Razer_Enki_X_Green.webp"
+    ]
+  }
+}

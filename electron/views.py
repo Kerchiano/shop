@@ -1,8 +1,15 @@
 import json
+import logging
+
+from django.core.paginator import Paginator, EmptyPage
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView
-from electron.models import Product, Categories, Order, OrderItem, Brand, SubCategory
+from electron.models import Product, Category, Order, OrderItem, Brand, SubCategory, Color
 
 from users.models import User
+
+logger = logging.getLogger(__name__)
 
 
 class Home(TemplateView):
@@ -11,17 +18,103 @@ class Home(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
 
-        context['category_list'] = Categories.objects.all()
+        context['category_list'] = Category.objects.all()
         return context
 
 
 class ProductList(ListView):
     model = Product
     template_name = 'electron/product_list.html'
-    context_object_name = 'product_list'
+    context_object_name = 'products'
 
     def get_queryset(self):
-        return Product.objects.filter(sub_category__slug=self.kwargs['sub_category'])
+        sub_category_slug = self.kwargs['sub_category']
+        products = Product.objects.filter(sub_category__slug=sub_category_slug).order_by('id')
+        return products
+
+    def get(self, request, *args, **kwargs):
+        page_number = request.GET.get('page', 1)
+        per_page = 5
+
+        products = self.get_queryset()
+        paginator = Paginator(products, per_page)
+
+        try:
+            current_page = paginator.page(page_number)
+            print(current_page.object_list)
+        except EmptyPage:
+            return JsonResponse({"error": "Страница не найдена"}, status=404)
+
+        context = self.get_context_data(object_list=current_page)
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.headers.get(
+                'X-Infinite-Scroll') == 'true':
+            serialized_products = [{"id": product.id, "name": product.name,
+                                    "brand": product.brand.name, 'image': product.image.url,
+                                    'price': product.price, 'color': product.color.name,
+                                    'slug': product.slug} for product in current_page
+                                   ]
+            return JsonResponse({"products": serialized_products})
+        else:
+            amount_pages = paginator.num_pages
+            amount_pages = [i for i in range(1, int(amount_pages) + 1)]
+            prev_page = current_page.previous_page_number() if current_page.has_previous() else None
+            next_page = current_page.next_page_number() if current_page.has_next() else None
+
+            context.update({"products": current_page, 'amount_pages': amount_pages,
+                            "prev_page": prev_page, "next_page": next_page})
+
+            return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductList, self).get_context_data(**kwargs)
+
+        all_brands = Brand.objects.all()
+        unique_first_letters = sorted(set(brand.name[0].upper() for brand in all_brands if brand.name))
+        all_colors = Color.objects.all()
+        context['all_brands'] = all_brands.count()
+        context['list_brands'] = all_brands.order_by('name')
+        context['all_colors'] = all_colors
+        context['amount_colors'] = all_colors.count()
+        context['alphabet'] = unique_first_letters
+
+        return context
+
+
+# class ProductListView(ListView):
+#     model = Product
+#     template_name = 'electron/product_list_test.html'
+#     context_object_name = 'products'
+#
+#     def get(self, request, *args, **kwargs):
+#         page_number = request.GET.get('page', 1)
+#         per_page = 5
+#
+#         products = Product.objects.all().order_by('id')
+#         paginator = Paginator(products, per_page)
+#
+#         try:
+#             current_page = paginator.page(page_number)
+#             print(current_page.object_list)
+#         except EmptyPage:
+#             return JsonResponse({"error": "Страница не найдена"}, status=404)
+#
+#         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.headers.get(
+#                 'X-Infinite-Scroll') == 'true':
+#             serialized_products = [{"id": product.id, "name": product.name,
+#                                     "brand": product.brand.name, 'image': product.image.url,
+#                                     'price': product.price, 'color': product.color.name,
+#                                     'slug': product.slug} for product in current_page
+#                                    ]
+#             return JsonResponse({"products": serialized_products})
+#         else:
+#             amount_pages = paginator.num_pages
+#             amount_pages = [i for i in range(1, int(amount_pages) + 1)]
+#             prev_page = current_page.previous_page_number() if current_page.has_previous() else None
+#             next_page = current_page.next_page_number() if current_page.has_next() else None
+#             return render(request, self.template_name,
+#                           {"products": current_page, 'amount_pages': amount_pages, "prev_page": prev_page,
+#                            "next_page": next_page})
 
 
 class BrandSubCategory(ListView):
@@ -49,7 +142,7 @@ class ProductDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetail, self).get_context_data(**kwargs)
 
-        context['category_list'] = Categories.objects.all()
+        context['category_list'] = Category.objects.all()
         return context
 
 

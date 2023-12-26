@@ -251,18 +251,140 @@ $(document).ready(function () {
         Filter_list_2(e.target.value);
     }, 500));
 
-    $('.item').hover(
+    $('.block_brand_filter').hover(
         function () {
-            $(this).find('.product_desc').show();
-            $(this).css({'border-bottom': 'none'});
-            $('.product_desc').css({'background-color': 'white'})
-            $('.overlay').css({'height': 'calc(100% + 140px)'})
+            $(this).find('.filter_name').css({'color': '#f84147'})
         },
         function () {
-            $(this).find('.product_desc').hide();
-            $(this).css({'border-bottom': '1px solid #e9e9e9'});
+            $(this).find('.filter_name').css({'color': '#3e77aa'})
         }
     );
+    const transform = function (angle) {
+        if (angle.css('transform') === 'none') {
+            angle.css({'transform': 'rotate(-180deg)'})
+        } else {
+            angle.css('transform', '')
+        }
+    }
+
+    $(".alphabet_button").click(function () {
+        $('.alphabet_list').toggle();
+    });
+
+    $(".letter_link").click(function () {
+        let selectedLetter = $(this).data('letter');
+        filterBrandsByLetter(selectedLetter);
+
+        let currentText = $("#input_search_brand").val();
+        $("#input_search_brand").val(currentText + selectedLetter);
+
+        $("#clear_input").show();
+    });
+
+    $("#input_search_brand").on('input', function () {
+        let inputText = $(this).val().toUpperCase();
+
+        if (inputText === '') {
+            $("#clear_input").hide();
+        } else {
+            $("#clear_input").show();
+        }
+
+        if (inputText === '') {
+            $(".brand_item").show();
+        } else {
+            filterBrandsByLetter(inputText);
+        }
+    });
+
+    $("#clear_input").click(function () {
+        $("#input_search_brand").val('');
+        $(".brand_item").show();
+        $(this).hide();
+    });
+
+    function filterBrandsByLetter(letter) {
+        $(".brand_item").hide();
+
+        $(".brand_item a[data-brand^='" + letter + "']").parent().show();
+    }
+
+    $("#Color").click(function () {
+        let angle = $(this).find('[data-transform="rotate"]');
+        $('#color_list').toggle();
+        transform(angle)
+    });
+
+    $("#Brand").click(function () {
+        let angle = $(this).find('[data-transform="rotate"]');
+        $('.block_alphabet_cursor').toggle();
+        $('.block_brand').toggle();
+        transform(angle)
+    });
+
+    $("#Price").click(function () {
+        let angle = $(this).find('[data-transform="rotate"]');
+        $('.wrapper').toggle();
+        transform(angle)
+    });
+
+
+    $(".checkbox_filter_link").click(function () {
+        $(this).toggleClass("checked");
+    });
+
+    $(function () {
+        let $slider = $("#slider-range");
+        let priceMin = $slider.data("price-min"),
+            priceMax = $slider.data("price-max");
+
+        $("#price-filter-min, #price-filter-max").map(function () {
+            $(this).attr({
+                "min": priceMin,
+                "max": priceMax
+            });
+        });
+        $("#price-filter-min").attr({
+            "placeholder": "min " + priceMin,
+            "value": priceMin
+        });
+        $("#price-filter-max").attr({
+            "placeholder": "max " + priceMax,
+            "value": priceMax
+        });
+
+        $slider.slider({
+            range: true,
+            min: Math.max(priceMin, 0),
+            max: priceMax,
+            values: [priceMin, priceMax],
+            slide: function (event, ui) {
+                $("#price-filter-min").val(ui.values[0]);
+                $("#price-filter-max").val(ui.values[1]);
+            }
+        });
+
+        $("#price-filter-min, #price-filter-max").map(function () {
+            $(this).on("input", function () {
+                updateSlider();
+            });
+        });
+
+        function updateSlider() {
+            $slider.slider("values", [$("#price-filter-min").val(), $("#price-filter-max").val()]);
+        }
+    });
+    $('.Arrow').hover(
+        function () {
+            $('.ArrowImg').css({
+                'filter': 'brightness(0.5) sepia(1) hue-rotate(-40deg) saturate(5) brightness(2)'
+            });
+        },
+        function () {
+            $('.ArrowImg').css({
+                'filter': 'none'
+            });
+        });
 });
 
 $("#Btn").on("click", function () {
@@ -617,6 +739,6 @@ if (userId) {
         }
     });
 } else {
-    console.error('Айди пользователя не найден в локальном хранилище.');
+    // console.error('Айди пользователя не найден в локальном хранилище.');
 }
 

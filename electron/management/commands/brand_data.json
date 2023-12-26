@@ -1,0 +1,210 @@
+[
+  {
+    "name": "RAZER",
+    "logo": "images/razer.jpg",
+    "subcategories": [
+      "Gaming-consoles",
+      "Gaming-notebooks",
+      "Gaming-chairs"
+    ],
+    "categories": [
+      "Gaming"
+    ]
+  },
+  {
+    "name": "ARTLINE",
+    "logo": "images/artline.jpg",
+    "subcategories": [
+      "Computers",
+      "Monitors",
+      "Gaming-notebooks",
+      "Gaming-chairs"
+    ],
+    "categories": [
+      "Gaming"
+    ]
+  },
+  {
+    "name": "MSI",
+    "logo": "images/msi.jpg",
+    "subcategories": [
+      "Monitors"
+    ],
+    "categories": [
+      "Gaming"
+    ]
+  },
+  {
+    "name": "PlayStation",
+    "logo": "images/igrovye_pristavki.jpg",
+    "subcategories": [
+      "Gaming-consoles"
+    ],
+    "categories": [
+      "Gaming"
+    ]
+  },
+  {
+    "name": "HUAWEI",
+    "logo": "images/huawei.jpg",
+    "subcategories": [
+      "Notebooks",
+      "Monitors",
+      "Smartphones",
+      "Power-banks"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "Philips",
+    "logo": "images/philips.jpg",
+    "subcategories": [
+      "TV",
+      "Power-banks"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "Nokia",
+    "logo": "images/nokia.jpg",
+    "subcategories": [
+      "Notebooks",
+      "TV"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "SONY",
+    "logo": "images/sony.jpg",
+    "subcategories": [
+      "Smartphones",
+      "TV"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "LG",
+    "logo": "images/lg.jpg",
+    "subcategories": [
+      "Smartphones",
+      "TV"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "Xiaomi",
+    "logo": "images/xiaomi.jpg",
+    "subcategories": [
+      "TV-cables",
+      "Smartphones",
+      "Tablets",
+      "Power-banks"
+    ],
+    "categories": [
+      "Smartphones, TV and Electronic"
+    ]
+  },
+  {
+    "name": "DELL",
+    "logo": "images/dell.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "Monitors"
+    ],
+    "categories": [
+      "Computers and notebooks"
+    ]
+  },
+  {
+    "name": "Samsung",
+    "logo": "images/samsung.png",
+    "subcategories": [
+      "Monitors",
+      "Tablets",
+      "Smartphones",
+      "TV"
+    ],
+    "categories": [
+      "Computers and notebooks",
+      "Smartphones, TV and Electronic",
+      "Gaming"
+    ]
+  },
+  {
+    "name": "Lenovo",
+    "logo": "images/lenovo.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "Monitors"
+    ],
+    "categories": [
+      "Computers and notebooks"
+    ]
+  },
+  {
+    "name": "Acer",
+    "logo": "images/acer.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "Monitors",
+      "Gaming-notebooks"
+    ],
+    "categories": [
+      "Computers and notebooks",
+      "Gaming"
+    ]
+  },
+  {
+    "name": "HP",
+    "logo": "images/hp.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "Monitors",
+      "Gaming-notebooks"
+    ],
+    "categories": [
+      "Computers and notebooks"
+    ]
+  },
+  {
+    "name": "ASUS",
+    "logo": "images/asus.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "Monitors",
+      "Gaming-notebooks"
+    ],
+    "categories": [
+      "Computers and notebooks",
+      "Gaming"
+    ]
+  },
+  {
+    "name": "Apple",
+    "logo": "images/apple.png",
+    "subcategories": [
+      "Notebooks",
+      "Computers",
+      "TV"
+    ],
+    "categories": [
+      "Computers and notebooks",
+      "Smartphones, TV and Electronic"
+    ]
+  }
+]
