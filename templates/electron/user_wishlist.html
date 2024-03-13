@@ -1,0 +1,133 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-personal__cabinet">
+        <main id="cabinet-content">
+            <h2 style="margin-top: 20px; margin-bottom: 20px">Wish List</h2>
+            <div class="wish_details">
+                <div class="wish-detail__headers">
+                    <h3 class="wish-details__heading">My wish list</h3>
+                    <div style="position: relative">
+                        <button class="dropdown-css__toggle">
+                            <i class="bi bi-three-dots-vertical" id="dropdown_wishlist"></i>
+                        </button>
+                        <div class="dropdown-css__container">
+                            <ul style="list-style-type: none; margin-bottom: 0">
+                                <li>
+                                    <button class="rename_wishlist">Edit title</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="wish-details__actions">
+                    <button class="choiceAllProducts">
+                        <i style="width: 20px; height: 30px; margin-right: 10px"></i>Select all
+                    </button>
+                    <button class="resetAllProducts" style="display: none">
+                        <i class="bi bi-check-all" id="checkItems"></i>Reset all
+                    </button>
+                    <button class="removeAllProducts" type="button" disabled>
+                        <i class="bi bi-trash" id="removeItems"></i>Remove
+                    </button>
+                </div>
+                <div class="wish-list__empty" style="display: none">Your wish list is empty</div>
+                <div class="wish-details__products">
+                    <div id="product-list" class="block_product_list" data-start="5">
+                        {% for product in wishlist %}
+                            {% with product=product.product %}
+                                <li class="item" style="position: relative"
+                                    data-price={{ product.price }} data-image={{ product.image.url }}
+                                    data-name={{ product.name }} data-brand={{ product.brand }}
+                                    data-color={{ product.color }}>
+                                    <h4 data-product-id={{ product.id }}></h4>
+                                    <div class="selectItem">
+                                        <div class="checkbox_selectItem" data-item-id="{{ product.id }}"></div>
+                                    </div>
+                                    <img class="contain" src="{{ product.image.url }}"
+                                         alt="Card image cap">
+                                    <a href="{% url 'detail' detail_slug=product.slug %}"
+                                       class="product_name">{{ product.name }}</a>
+                                    <div style="display: flex; align-items: center; text-align: center; justify-content: space-between">
+                                        <h3 style="margin-bottom: 0; color: #f84147; font-size: 20px">{{ product.price }}₴</h3>
+                                        <button class="glowing"><i class="bi bi-cart4 fa-xl" style="color:#00a046;"></i>
+                                        </button>
+                                    </div>
+                                    <div style="display: flex; align-items: center; text-align: center; margin-top: 10px">
+                                        <span style="color: #00a046; font-size: 12px;">Готов к отправке</span>
+                                        <i class="fa-solid fa-truck"
+                                           style="color: #00a046; margin-left: 10px; width: 16px; height: 16px"></i>
+                                    </div>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+        <aside class="sidebarCabinet">
+            <nav>
+                <div class="cabinet-user">
+                    <a href="{% url 'personal-information' %}" class="cabinet-user__link">
+                        <div class="cabinet-user__icon"></div>
+                        <div class="cabinet-user__person__data" style="vertical-align: top">
+                            <p>{{ user.name }} {{ user.last_name }}</p>
+                            <p>{{ user.email }}</p>
+                        </div>
+                    </a>
+                </div>
+            </nav>
+            <ul class="cabinet-navigation__list">
+                <li class="cabinet-navigation__item">
+                    <a href="" class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-card-list"
+                                    id="icon-orders"></i>My orders</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-cart4"
+                                    id="user-cabinet__cart"></i>Shopping cart</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item" id="wishList">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-heart"
+                                    id="user-cabinet__wish__list"></i>Wish List</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item" id="myReviews">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-chat-left-text"
+                                    id="user-cabinet__reviews"></i>My reviews</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <div class="editNameWrapper" style="display: none;">
+        <div class="modal_background_editName">
+        </div>
+        <div class="modalEditName" style="width: 28%; height: 40%">
+            <div class="modal__header">
+                <h3 style="font-size: 24px; margin: 0">Edit title</h3>
+                <button class="modal__close" style="font-size: 24px; color: #797878">x</button>
+            </div>
+            <div class="modal__content">
+                <label class="title__editName">
+                    List title
+                </label>
+                <input type="text" id="inputEditName">
+            </div>
+            <div class="edit-name__footer">
+                <button class="edit-name__save" type="button" disabled>Save
+                </button>
+                <button class="cancelChangeEditName" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

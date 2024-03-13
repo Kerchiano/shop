@@ -1,6 +1,10 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+
+from electron.models import UserProfile, User
 
 
 class UserManager(BaseUserManager):
@@ -29,6 +33,12 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         user = self._create_user(email, password, True, True, **extra_fields)
         return user
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        profile = UserProfile.objects.create(user=instance)
 
 
 class User(AbstractBaseUser, PermissionsMixin):

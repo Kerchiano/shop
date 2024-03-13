@@ -1,27 +1,9 @@
 {% extends 'electron/base.html' %}
-{% block header %}
-    {% for object in category_list %}
-
-        <a href="{% url 'category' category_slug=object.name %}">{{ object.name }}</a>
-    {% endfor %}
-{% endblock header %}
 {% block content %}
-    <div class="center">
-        <form method="post" class="card" style="border-radius: 30px; padding: 0 20px">
-            {% csrf_token %}
-
-            <h2 class="text-center">Create your account</h2>
-
-            {% for field in form %}
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.errors %}
-                    <small class="error">{{ field.errors|striptags }}</small>
-                {% endif %}
-            {% endfor %}
-
-            <input type="submit" value="Register" class="btn btn-primary full-width" style="background-color: black">
-            <p class="text-center">Already have an account? <br> <a href="{% url 'login' %}">Login Here</a></p>
-        </form>
-    </div>
-{% endblock content %}
+    <script>
+        setTimeout(function () {
+            $('.registrationWrapper').css({opacity: 0})
+            $('.registrationWrapper').css({display: 'flex'}).animate({opacity: 1}, 300)
+        }, 300);
+    </script>
+{% endblock %}

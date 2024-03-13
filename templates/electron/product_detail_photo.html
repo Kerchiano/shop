@@ -1,0 +1,95 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block header %}
+    {% for object in category_list %}
+        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
+    {% endfor %}
+{% endblock header %}
+{% block content %}
+    <div class="detail_container">
+        <div class="tabs">
+            <div class="layout">
+                <ul class="tabs__list" data-product-slug="{{ product_data.slug }}"
+                    data-product-name="{{ product_data.name }}">
+                    <li class="tabs__item" data-tab="">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}"
+                           class="tabs__link">About product
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="reviews">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}reviews"
+                           class="tabs__link">Reviews
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="photo">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}photo"
+                           class="tabs__link">Photo
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="carousel" style="width: 0; height: 0; margin: auto;">
+            <div class="product-image-item" data-product-id="{{ product_data.id }}"
+                 data-price="{{ product_data.price }}" data-image="{{ product_data.image.url }}"
+                 data-name="{{ product_data.name }}" style="all: unset;"></div>
+        </div>
+        <div class="containerPhoto">
+            <div class="title_block_photo">Photos {{ product_data.sub_category }} {{ product_data.name }}</div>
+            <div class="contentPhoto">
+                <div class="leftPartContent">
+                    <ul class="listDetailPhotos">
+                        {% for image in product_images %}
+                            <li class="productPhotosItem"><img src="{{ image.image.url }}" class="productPhoto"
+                                                               alt="photo">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="rightPartContent">
+                    <div class="innerRight">
+                        <div class="product-carriage">
+                            <div class="product-carriage__goods">
+                                <figure class="product-carriage__goods-figure">
+                                    <img src="{{ product_data.image.url }}" alt="" class="product-carriage__goods-img">
+                                </figure>
+                                <div class="product-carriage__goods-title">{{ product_data.sub_category }} {{ product_data.name }}</div>
+                            </div>
+                            <div class="product-carriage__buy">
+                                <div class="product-seller">
+                                    <div class="product-seller__body">
+                                        <span style="font-size: 14px; font-weight: 400">Продавец: <span
+                                                style="font-size: 16px; font-weight: 700">BERSERKLETRON</span></span>
+                                    </div>
+                                </div>
+                                <div class="product-carriage__buy-top">
+                                    <div>
+                                        <p style="margin-bottom: 0; color: #f84147; font-size: 18px; font-weight: 700">{{ product_data.price }}$</p>
+                                        <p style="margin-bottom: 0; color: #00a046; font-size: 14px">Есть в наличии</p>
+                                    </div>
+                                    <div style="display: flex; justify-content: center; align-items: center"
+                                         data-product-id="{{ product_data.id }}">
+                                        <button class="heartButton">
+                                            <img src="{% static 'electron/images/heart.png' %}" class="heart"
+                                                 alt="Heart">
+                                        </button>
+                                        <span class="wishlist-count"
+                                              style="font-weight: normal; font-size: 1rem">{{ count_Like }}</span>
+                                    </div>
+                                    <div class="DeatailBuyProduct" style="width: 100%; margin-top: 16px">
+                                        <button class="glowingDetail"><i class="bi bi-cart4 fa-xl" id="detailCart"></i>Купить
+                                        </button>
+                                        <button class="checkProduct"><i class="bi bi-cart4 fa-xl"
+                                                                        id="detailCart"></i><span
+                                                class="productInCart">В корзине</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

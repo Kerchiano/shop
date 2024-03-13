@@ -1,0 +1,222 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block header %}
+    {% for object in category_list %}
+        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
+    {% endfor %}
+{% endblock header %}
+{% block content %}
+    <div class="detail_container">
+        <div class="tabs">
+            <div class="layout">
+                <ul class="tabs__list" data-product-slug="{{ product_data.slug }}"
+                    data-product-name="{{ product_data.name }}">
+                    <li class="tabs__item" data-tab="">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}"
+                           class="tabs__link">About product
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="reviews">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}reviews"
+                           class="tabs__link">Reviews
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="photo">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}photo"
+                           class="tabs__link">Photo
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="updateBlockDetail">
+            <div class="carousel" style="width: 0; height: 0; margin: auto;">
+                <div class="product-image-item" data-product-id="{{ product_data.id }}"
+                     data-price="{{ product_data.price }}" data-image="{{ product_data.image.url }}"
+                     data-name="{{ product_data.name }}" style="all: unset;"></div>
+            </div>
+            <div class="reviewWrapperSuccess">
+                <div class="modal_background_success">
+                </div>
+                <div class="modalReviewSuccess" style="width: 35%; height: 60%">
+                    <div class="modalHeader">
+                        <h3>Review added</h3>
+                        <button class="modal__close">
+                            <img src="{% static 'electron/images/close.png' %}" alt="close"
+                                 style="width: 16px; height: 16px">
+                        </button>
+                    </div>
+                    <div class="modalHeaderSuccess" style="padding: 24px">
+                        <div class="thanks_modal">
+                            <img src="{% static 'electron/images/verified.png' %}" alt=""
+                                 style="width: 48px; height: 48px; margin-bottom: 20px">
+                            <h2 style="margin-bottom: 20px">Thanks!</h2>
+                            <span style="text-align: center; font-size: 16px; color: #797878;">Your review has been successfully published</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reviewContainer">
+                <div class="product__heading">
+                    <h1 style="font-size: 24px">Reviews from
+                        sellers {{ product_data.sub_category }} {{ product_data.description }}</h1>
+                </div>
+                <div class="avgRating">
+                    <div style="margin: 4px;">
+                        <div id="rating" data-avg_rating="{{ average_rating.rating__avg }}"
+                             data-review_count="{{ review_count }}"></div>
+                        <div class="background-container">
+                        </div>
+                    </div>
+                    <div class="linkReview">
+                        <a href="">{{ review_count }} reviews</a>
+                    </div>
+                </div>
+                <div class="product-tabs__body">
+                    <div class="leftPartContent">
+                        <div class="productReviews" data-response="{{ success }}">
+                            <div>Add your review about this product</div>
+                            <div style="margin-left: auto">
+                                <button class="reviewButton">Write review</button>
+                            </div>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <div class="reviewWrapper">
+                                <div class="modal_background">
+                                </div>
+                                <div class="modalReview">
+                                    <div class="modalHeader">
+                                        <h3>Write review</h3>
+                                        <button class="modal__close">
+                                            <div class="closeWindow"></div>
+                                        </button>
+                                    </div>
+                                    <div class="modalContent">
+                                        <form id="reviewForm" method="post"
+                                              action="{% url 'detail_reviews' detail_slug=product_data.slug %}">
+                                            {% csrf_token %}
+                                            <div id="productName">
+                                                {{ review_form.product.label_tag }}
+                                                {{ review_form.product }}
+                                            </div>
+                                            <div style="margin-bottom: 0">Оцените товар</div>
+                                            <div class="rating">
+                                                <span class="star" data-value="1">&#9733;</span>
+                                                <span class="star" data-value="2">&#9733;</span>
+                                                <span class="star" data-value="3">&#9733;</span>
+                                                <span class="star" data-value="4">&#9733;</span>
+                                                <span class="star" data-value="5">&#9733;</span>
+                                            </div>
+                                            <div class="ratingMark" style="display: none">
+                                                {{ review_form.rating.label_tag }}
+                                                {{ review_form.rating }}
+                                            </div>
+                                            {{ review_form.text.label_tag }}
+                                            {{ review_form.text }}
+                                            {{ review_form.text.errors }}
+                                            <div class="addReview_or_closeReview">
+                                                <button class="modalReviewClose" type="submit">Close</button>
+                                                <button class="modalReviewAdd" type="submit">Add review</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <script>
+                                $(document).ready(function () {
+                                    $(document).on('click', '.reviewButton', function () {
+                                        $('.loginWrapper').css({'display': 'flex'});
+                                    });
+                                });
+                            </script>
+                        {% endif %}
+
+                        <h2 style="margin-top: 20px">Reviews</h2>
+
+                        <ul class="product_list_reviews" style="list-style-type: none">
+                            {% for review in reviews %}
+                                <li>
+                                    <div class="review__inner">
+                                        <div class="review_header">
+                                            <div class="header_author">
+                                                <div>{{ review.user.name }} {{ review.user.last_name }}</div>
+                                                <div style="color: #a6a5a5">{{ review.created_at }}</div>
+                                            </div>
+                                        </div>
+                                        <div style="padding-left: 16px; padding-right: 16px; color: #797878; font-size: 12px;">
+                                            Review from user. Seller: Berserkletron.
+                                        </div>
+                                        <div class="reviewRating" style="padding-left: 12px">
+                                            <div class="review_rating" data-review-mark="{{ review.rating }}"
+                                                 style="width: 15%; margin: 0;">
+                                                <span class="review_star" data-value="1"
+                                                      style="font-size: 24px">&#9733;</span>
+                                                <span class="review_star" data-value="2"
+                                                      style="font-size: 24px">&#9733;</span>
+                                                <span class="review_star" data-value="3"
+                                                      style="font-size: 24px">&#9733;</span>
+                                                <span class="review_star" data-value="4"
+                                                      style="font-size: 24px">&#9733;</span>
+                                                <span class="review_star" data-value="5"
+                                                      style="font-size: 24px">&#9733;</span>
+                                            </div>
+                                        </div>
+                                        <div class="reviewText">
+                                            <div>{{ review.text }}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="rightPartContent">
+                        <div class="innerRight">
+                            <div class="product-carriage">
+                                <div class="product-carriage__goods">
+                                    <figure class="product-carriage__goods-figure">
+                                        <img src="{{ product_data.image.url }}" alt=""
+                                             class="product-carriage__goods-img">
+                                    </figure>
+                                    <div class="product-carriage__goods-title">{{ product_data.sub_category }} {{ product_data.name }}</div>
+                                </div>
+                                <div class="product-carriage__buy">
+                                    <div class="product-seller">
+                                        <div class="product-seller__body">
+                                        <span style="font-size: 14px; font-weight: 400">Продавец: <span
+                                                style="font-size: 16px; font-weight: 700">BERSERKLETRON</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-carriage__buy-top">
+                                        <div>
+                                            <p style="margin-bottom: 0; color: #f84147; font-size: 18px; font-weight: 700">{{ product_data.price }}$</p>
+                                            <p style="margin-bottom: 0; color: #00a046; font-size: 14px">Есть в
+                                                наличии</p>
+                                        </div>
+                                        <div style="display: flex; justify-content: center; align-items: center"
+                                             data-product-id="{{ product_data.id }}">
+                                            <button class="heartButton">
+                                                <img src="{% static 'electron/images/heart.png' %}" class="heart"
+                                                     alt="Heart">
+                                            </button>
+                                            <span class="wishlist-count">{{ count_Like }}</span>
+                                        </div>
+                                        <div class="DeatailBuyProduct" style="width: 100%; margin-top: 16px">
+                                            <button class="glowingDetail"><i class="bi bi-cart4 fa-xl"
+                                                                             id="detailCart"></i>Купить
+                                            </button>
+                                            <button class="checkProduct"><i class="bi bi-cart4 fa-xl"
+                                                                            id="detailCart"></i><span
+                                                    class="productInCart">В корзине</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -9,40 +9,18 @@
                 <span class="filter_name">Brand<span class="all_amount_brands">{{ all_brands }}</span></span>
                 <i class="fa-solid fa-angle-up" data-transform="rotate"></i>
             </button>
-            <div class="block_alphabet_cursor">
-                <div class="search_brand">
-                    <input id="input_search_brand" type="text" placeholder="Пошук">
-                    <span id="clear_input" class="clear-input"
-                          style="display: none; position: absolute; right: 15px; top: 5px; cursor: pointer"><i
-                            class="fa-solid fa-xmark" style="color: #3e77aa"></i></span>
-                </div>
-                <div class="alphabet_cursor">
-                    <button class="alphabet_button">
-                        <span class="alphabet_link">Alphabetical index</span>
-                    </button>
-                    <ul class="alphabet_list">
-                        {% for letter in alphabet %}
-                            <li>
-                                <a class="letter_link" data-letter={{ letter }}>{{ letter }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
             <div class="block_brand"
-                 style="height: 420px; position: relative; padding-bottom: 20px">
+                 style="position: relative; padding-bottom: 20px; height: 70px">
                 <div id="vert_scroll" style="height: 100%; width: 235px; overflow-y: auto">
                     <div style="width: 233px">
                         <ul class="checkbox_filter">
-                            {% for brand in list_brands %}
-                                <li class="brand_item">
-                                    <a class="checkbox_filter_link"
-                                       data-filter-value="{{ brand }}" data-filter-name="brand"
-                                       data-letter="{{ brand.0|upper }}">
-                                        {{ brand }}
-                                    </a>
-                                </li>
-                            {% endfor %}
+                            <li class="brand_item">
+                                <a class="checkbox_filter_link"
+                                   data-filter-value="{{ products.0.brand }}" data-filter-name="brand"
+                                   data-page="{{ current_page }}">
+                                    {{ products.0.brand }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -56,7 +34,7 @@
                     <i class="fa-solid fa-angle-up" data-transform="rotate"></i>
                 </button>
                 <div class="wrapper">
-                    <div class="price-filters">
+                    <div class="price-filters" style="margin-bottom: 20px">
                         <input type="text" id="price-filter-min"
                                aria-label="Minimum price for filtering products">
                         <span style="margin-left: 4px; margin-right: 4px; color: #a6a5a5;"> - </span>
@@ -71,40 +49,15 @@
                 </div>
             </div>
             <hr style="margin: 0 -8px 0 -8px">
-            <div style="width: 233px;">
-                <button class="block_brand_filter" id="Color">
-                    <span class="filter_name">Color<span class="all_amount_brands">{{ amount_colors }}</span></span>
-                    <i class="fa-solid fa-angle-up" data-transform="rotate"></i>
-                </button>
-                <ul class="checkbox_filter" id="color_list">
-                    {% for color in all_colors %}
-                        <li class="brand_item">
-                            <a class="checkbox_filter_link" data-filter-value={{ color }} data-filter-name="color">
-                                {{ color }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
         </div>
 
         <div class="block_product_list_and_pagination">
             <div id="product-list" class="block_product_list" data-start="5">
-                {% for product, count_like in products_with_likes %}
-                    <li class="item" style="position: relative"
-                        data-price={{ product.price }} data-image={{ product.image.url }}
+                {% for product in products %}
+                    <li class="item" data-price={{ product.price }} data-image={{ product.image.url }}
                         data-name={{ product.name }} data-brand={{ product.brand }} data-color={{ product.color }}>
-                        <div style="display: flex; justify-content: center; align-items: center; position: absolute; right: 20px"
-                             data-product-id="{{ product.id }}">
-                            <button class="heartButton">
-                                <img src="{% static 'electron/images/heart.png' %}" class="heart"
-                                     alt="Heart">
-                            </button>
-                            <span class="wishlist-count">{{ count_like }}</span>
-                        </div>
                         <h4 data-product-id={{ product.id }}></h4>
-                        <img class="contain" src="{{ product.image.url }}"
-                             alt="Card image cap">
+                        <img class="contain" src="{{ product.image.url }}" alt="Card image cap">
                         <a href="{% url 'detail' detail_slug=product.slug %}"
                            class="product_name">{{ product.name }}</a>
                         <div style="display: flex; align-items: center; text-align: center; justify-content: space-between">
@@ -119,14 +72,6 @@
                         </div>
                     </li>
                 {% endfor %}
-            </div>
-            <div class="containerPagination" style="width: 100%">
-                <div class="LoadingYetPages">
-                    <a id="showMore" class="showMore">
-                        <img src="{% static 'electron/images/reload.png' %}" alt="Reload" class="reloadImg">
-                        <span class="showMoreText">Показать еще 5 товаров</span>
-                    </a>
-                </div>
             </div>
             <div class="blockPagination"
                  style=" width: 100%; justify-content: center; align-content: center; align-items: center; margin: 0 auto">

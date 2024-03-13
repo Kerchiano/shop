@@ -1,23 +1,18 @@
 from django.contrib import admin
-from .models import Product, Category, Order, OrderItem, SubCategory, Brand, Color
+from .models import Product, Category, Order, OrderItem, SubCategory, Brand, Color, ProductPhoto, Review, UserProfile, \
+    WishlistItem
 
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-        "id", "get_user_id", "firstname", "lastname", "email", "phone_number", "location", "postOfficeAddress",
+        "user_id",
+        "firstname", "lastname", "email", "phone_number", "location", "postOfficeAddress",
         "amount", "date")
-    ordering = ('id',)
-
-    def get_user_id(self, obj):
-        return obj.user_id or 0
-
-    get_user_id.short_description = 'User ID'
 
 
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = (
-        "id", 'get_order_id', "get_product_id", "name", "image", "quantity", "price", "total")
-    ordering = ('id',)
+        "get_product_id", "get_order_item_id", "get_order_id", "quantity")
 
     def get_product_id(self, obj):
         return obj.product_id
@@ -29,11 +24,20 @@ class OrderItemAdmin(admin.ModelAdmin):
 
     get_order_id.short_description = 'Order ID'
 
+    def get_order_item_id(self, obj):
+        return obj.id
+
+    get_order_item_id.short_description = 'Order item ID'
+
 
 admin.site.register(Product)
+admin.site.register(UserProfile)
+admin.site.register(WishlistItem)
 admin.site.register(Color)
+admin.site.register(Review)
 admin.site.register(SubCategory)
 admin.site.register(Brand)
 admin.site.register(Category)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
+admin.site.register(ProductPhoto)

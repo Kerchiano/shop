@@ -3,22 +3,10 @@
 
 {% endblock header %}
 {% block content %}
-    <br><br><br>
     <div class="block-brand">
         <div class="block-brand-list">
-            <ul style="display:flex; list-style-type: none; margin-left: 25px; padding-left: 0;overflow-x: auto;">
-                {% for brand in brand_list %}
-                    <li style="width: 130px; height: 60px; flex-shrink: 0">
-                        {#                        <a href="{% url 'brand' brand_slug=brand.slug %}" class="link-brand">#}
-                        <a href="#" class="link-brand">
-                            <img src="{{ brand.logo.url }}" class="img-brand">
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-            <br><br><br>
             <ul class="list_sub_category">
-                {% for sub_cat in sub_category_list %}
+                {% for sub_cat in current_sub_category_list %}
                     <li class="item_sub_category">
                         <a href="{% url 'sub_category' sub_category=sub_cat.slug %}" class="item_sub_category_link">
                             <img src="{{ sub_cat.image.url }}" alt="" class="cat_img">

@@ -1,0 +1,189 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block content %}
+    {% if not user.is_authenticated %}
+        {% if request.path != '/login/' %}
+            {% url 'login' as login_url %}
+            <script>
+                window.location.href = "{{ login_url }}";
+            </script>
+        {% endif %}
+
+    {% else %}
+        <div class="container-personal__cabinet">
+            <main id="cabinet-content">
+                <h1 class="cabinet__heading">Personal data</h1>
+                <div class="personal-section">
+                    <div class="personal-section__header">
+                        <img src="/media/images/user.png" alt="userAvatar"
+                             style="width: 24px; height: 24px; margin-right: 16px;">
+                        <h1 class="personal-section__heading">Personal data</h1>
+                        <img src="/media/images/down.png" alt="" style="flex-shrink: 0; width: 24px; height: 24px; ">
+                    </div>
+                    <div class="personal-section__body">
+                        <form id="notChangeData">
+                            <ul class="personal-data__list">
+                                <li class="personal-data__item">
+                                    <label for="last_name" class="personal-data__label">Last name</label>
+                                    <p class="personal-data__value">{{ user_profile.user.last_name }}</p>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="name" class="personal-data__label">Name</label>
+                                    <p class="personal-data__value">{{ user_profile.user.name }}</p>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="birthday" class="personal-data__label">Date of birth</label>
+                                    <p class="personal-data__value">{{ user_profile.date_of_birth|default_if_none:"" }}</p>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="gender" class="personal-data__label">Gender</label>
+                                    <p class="personal-data__value">{{ user_profile.get_gender_display|default:"Not specified" }}</p>
+                                </li>
+                            </ul>
+                            <div class="personal-data__footer">
+                                <button class="personal-data__edit" type="button">Edit</button>
+                            </div>
+                        </form>
+                        <form id="ChangeUserProfileData" method="post" style="display: none">
+                            {% csrf_token %}
+                            <ul class="personal-data__list">
+                                <li class="personal-data__item">
+                                    <label for="last_name" class="personal-data__label">Last name</label>
+                                    <div style="margin-bottom: 20px">
+                                        <input type="text" name="last_name" id="id_change_last_name"
+                                               style="margin-bottom: 0">
+                                        <p class="validation_type_error ">Enter more than 2 characters in Latin</p>
+                                    </div>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="name" class="personal-data__label">Name</label>
+                                    <div style="margin-bottom: 20px">
+                                        <input type="text" name="name" id="id_change_name" style="margin-bottom: 0">
+                                        <p class="validation_type_error ">Enter more than 2 characters in Latin</p>
+                                    </div>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="birthday" class="personal-data__label">Date of birth</label>
+                                    <div>
+                                        {{ UserProfileForm.date_of_birth }}
+                                    </div>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="gender" class="personal-data__label">Gender</label>
+                                    <div>
+                                        {{ UserProfileForm.gender }}
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="personal-data__footer">
+                                <button class="personal-data__save" type="button">Save</button>
+                                <button class="cancelChangePersonalData" type="button">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="personal-section">
+                    <div class="personal-section__header">
+                        <img src="/media/images/open-mail.png" alt="openMail"
+                             style="width: 24px; height: 24px; margin-right: 16px;">
+                        <h1 class="personal-section__heading">Contacts</h1>
+                        <img src="/media/images/down.png" alt="" style="flex-shrink: 0; width: 24px; height: 24px; ">
+                    </div>
+                    <div class="personal-section__body">
+                        <form id="ContactsUser">
+                            <ul class="personal-data__list">
+                                <li class="personal-data__item">
+                                    <label for="email" class="personal-data__label">Email</label>
+                                    <p class="personal-data__value">{{ user_profile.user.email }}</p>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="phone_number" class="personal-data__label">Phone number</label>
+                                    <p class="personal-data__value">{{ user_profile.user.phone_number }}</p>
+                                </li>
+                            </ul>
+                            <div class="personal-data__footer">
+                                <button class="login__data__edit" type="button">Edit</button>
+                            </div>
+                        </form>
+                        <form id="ChangeContactsUser" method="post" style="display: none">
+                            {% csrf_token %}
+                            <ul class="personal-data__list">
+                                <li class="personal-data__item">
+                                    <label for="email" class="personal-data__label">Email</label>
+                                    <div style="margin-bottom: 20px">
+                                        <input type="email" name="email" id="id_change_email" style="margin-bottom: 0">
+                                        <p class="validation_type_error ">Email is empty or Invalid</p>
+                                    </div>
+                                </li>
+                                <li class="personal-data__item">
+                                    <label for="phone_number" class="personal-data__label">Phone number</label>
+                                    <div style="margin-bottom: 20px">
+                                        <input type="tel" name="phone_number" id="id_change_phone_number"
+                                               style="margin-bottom: 0">
+                                        <p class="validation_type_error ">Phone number is empty or Invalid</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="personal-data__footer">
+                                <button class="contacts__save" type="button">Save</button>
+                                <button class="cancelChangePersonalData" type="button">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="account-actions">
+                    <div>
+                        <button class="changePassword" id="changePassword" type="button">Change password</button>
+                        <br>
+                        <button class="cabinetLogout" id="cabinetLogout" type="button">Logout</button>
+                    </div>
+                    <button class="deleteAccount" id="deleteAccount" type="button">Delete account</button>
+                </div>
+            </main>
+            <aside class="sidebarCabinet">
+                <nav>
+                    <div class="cabinet-user">
+                        <a href="{% url 'personal-information' %}" class="cabinet-user__link">
+                            <div class="cabinet-user__icon"></div>
+                            <div class="cabinet-user__person__data" style="vertical-align: top">
+                                <p>{{ user.name }} {{ user.last_name }}</p>
+                                <p>{{ user.email }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+                <ul class="cabinet-navigation__list">
+                    <li class="cabinet-navigation__item">
+                        <a href="" class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-card-list"
+                                    id="icon-orders"></i>My orders</span>
+                        </a>
+                    </li>
+                    <li class="cabinet-navigation__item">
+                        <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-cart4"
+                                    id="user-cabinet__cart"></i>Shopping cart</span>
+                        </a>
+                    </li>
+                    <li class="cabinet-navigation__item" id="wishList">
+                        <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-heart"
+                                    id="user-cabinet__wish__list"></i>Wish List</span>
+                        </a>
+                    </li>
+                    <li class="cabinet-navigation__item" id="myReviews">
+                        <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-chat-left-text"
+                                    id="user-cabinet__reviews"></i>My reviews</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+    {% endif %}
+{% endblock %}

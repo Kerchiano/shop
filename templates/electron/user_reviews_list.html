@@ -1,0 +1,108 @@
+{% extends 'electron/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-personal__cabinet">
+        <main id="cabinet-content">
+            <h2 style="margin-top: 20px">Reviews</h2>
+            <ul class="product_list_reviews" style="list-style-type: none">
+                {% for review in user_reviews %}
+                    <li>
+                        <div class="review__inner">
+                            <div class="review_header">
+                                <div class="header_author">
+                                    <div>{{ review.user.name }} {{ review.user.last_name }}</div>
+                                    <div style="color: #a6a5a5">{{ review.created_at }}</div>
+                                </div>
+                            </div>
+                            <div style="padding-left: 16px; padding-right: 16px; color: #797878; font-size: 12px;">
+                                Review from user. Seller: Berserkletron.
+                            </div>
+                            <div class="reviewRating" style="padding-left: 12px">
+                                <div class="review_rating" data-review-mark="{{ review.rating }}"
+                                     style="width: 15%; margin: 0;">
+                                                <span class="review_star" data-value="1"
+                                                      style="font-size: 24px">&#9733;</span>
+                                    <span class="review_star" data-value="2"
+                                          style="font-size: 24px">&#9733;</span>
+                                    <span class="review_star" data-value="3"
+                                          style="font-size: 24px">&#9733;</span>
+                                    <span class="review_star" data-value="4"
+                                          style="font-size: 24px">&#9733;</span>
+                                    <span class="review_star" data-value="5"
+                                          style="font-size: 24px">&#9733;</span>
+                                </div>
+                            </div>
+                            <div class="reviewText">
+                                <div>{{ review.text }}</div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="pagination">
+              <span class="step-links">
+                {% if user_reviews.has_previous %}
+                    <a href="?page=1">&laquo; First</a>
+                    <a href="?page={{ user_reviews.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                  {% for i in user_reviews.paginator.page_range %}
+                      {% if user_reviews.number == i %}
+                          <span class="current">{{ i }}</span>
+                      {% else %}
+                          <a href="?page={{ i }}" class="reviewPage">{{ i }}</a>
+                      {% endif %}
+                  {% endfor %}
+
+                  {% if user_reviews.has_next %}
+                      <a href="?page={{ user_reviews.next_page_number }}">Next</a>
+                      <a href="?page={{ user_reviews.paginator.num_pages }}">Last &raquo;</a>
+                  {% endif %}
+              </span>
+            </div>
+        </main>
+        <aside class="sidebarCabinet">
+            <nav>
+                <div class="cabinet-user">
+                    <a href="{% url 'personal-information' %}" class="cabinet-user__link">
+                        <div class="cabinet-user__icon"></div>
+                        <div class="cabinet-user__person__data" style="vertical-align: top">
+                            <p>{{ user.name }} {{ user.last_name }}</p>
+                            <p>{{ user.email }}</p>
+                        </div>
+                    </a>
+                </div>
+            </nav>
+            <ul class="cabinet-navigation__list">
+                <li class="cabinet-navigation__item">
+                    <a href="" class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-card-list"
+                                    id="icon-orders"></i>My orders</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-cart4"
+                                    id="user-cabinet__cart"></i>Shopping cart</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item" id="wishList">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-heart"
+                                    id="user-cabinet__wish__list"></i>Wish List</span>
+                    </a>
+                </li>
+                <li class="cabinet-navigation__item" id="myReviews">
+                    <a class="cabinet-navigation__link">
+                            <span style="align-items: center; display: flex; gap: 15px"><i
+                                    class="bi bi-chat-left-text"
+                                    id="user-cabinet__reviews"></i>My reviews</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+{% endblock %}

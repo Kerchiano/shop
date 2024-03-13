@@ -1,6 +1,6 @@
 import random
 import string
-from electron.models import Category, SubCategory, Brand, Product, Color
+from electron.models import Category, SubCategory, Brand, Product, Color, ProductPhoto
 from django.core.management.base import BaseCommand
 import json
 
@@ -9,6 +9,10 @@ subcategory_data_file_path = 'C:/Users/Kerchiano/bombastic/electron/management/c
 subcategory_images_data_file_path = 'C:/Users/Kerchiano/bombastic/electron/management/commands' \
                                     '/subcategory_images_data.json'
 brand_data_file_path = 'C:/Users/Kerchiano/bombastic/electron/management/commands/brand_data.json'
+products_photos_file_path = 'C:/Users/Kerchiano/bombastic/electron/management/commands/products_photos.json'
+
+products_description_file_path = 'C:/Users/Kerchiano/bombastic/electron/management/commands/products_description.json'
+products_description_file_path.replace('\n', ' ')
 
 
 def generate_random_string(length):
@@ -27,7 +31,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         def load_json_data(file_path):
-            with open(file_path, 'r') as json_file:
+            with open(file_path, 'r', encoding='utf-8') as json_file:
                 data = json.load(json_file)
             return data
 
@@ -37,6 +41,8 @@ class Command(BaseCommand):
         subcategory_data = load_json_data(subcategory_data_file_path)
         subcategory_images = load_json_data(subcategory_images_data_file_path)
         brand_data = load_json_data(brand_data_file_path)
+        products_photos = load_json_data(products_photos_file_path)
+        products_description = load_json_data(products_description_file_path)
 
         categories = []
         for category_info in category_data:
@@ -117,3 +123,26 @@ class Command(BaseCommand):
                             Product.objects.create(slug=product_slug, name=product_name, price=product_price,
                                                    sub_category=subcategory, brand=brand, color=random_color,
                                                    image=product_image)
+
+        # Добавление фотографи для кадого товара при первом запуске если данных нет, потом комментировать
+        for subcategory in SubCategory.objects.all():
+            category_photos = products_photos.get(subcategory.name, [])
+
+            for photo_path in category_photos:
+                if photo_path:
+                    product_photo = ProductPhoto.objects.create(image=photo_path, subcategory=subcategory)
+                    product_photo.save()
+
+        # Выбор в завивимости от подкатегории нужному продукту его фотографи
+        for product in Product.objects.all():
+            subcategory = product.sub_category
+
+            photos_for_subcategory = ProductPhoto.objects.filter(subcategory=subcategory)
+
+            product.photos.set(photos_for_subcategory)
+        for subcategory, subcategory_value in products_description.items():
+            products_to_update = Product.objects.filter(sub_category__name=subcategory)
+            for product in products_to_update:
+                product.description = subcategory_value[0]
+                product.save()
+        print("Data generation completed.")

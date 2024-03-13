@@ -1,17 +1,89 @@
 {% extends 'electron/base.html' %}
-{% block header %}
-    {% for object in category_list %}
-        <a href="{% url 'category' category_slug=object.slug %}">{{ object.name }}</a>
-    {% endfor %}
-{% endblock header %}
+{% load static %}
 {% block content %}
-    <li class="item" id="detail_card" data-price={{ object.price }} data-name={{ object.name }}>
-        <h4 data-product-id={{ object.slug }}></h4>
-        <img class="img_detail" src="{{ detail.image.url }}">
-        <h2>{{ detail.name }}</h2>
-        <h3>{{ detail.price }}₴</h3>
-        <button class='glowing-btn' style="width: 194px"><span class='glowing-txt'>Ку<span
-                class='faulty-letter'>пи</span>ть</span>
-        </button>
-    </li>
+    <div class="detail_container">
+        <div class="tabs">
+            <div class="layout">
+                <ul class="tabs__list" data-product-slug="{{ product_data.slug }}"
+                    data-product-name="{{ product_data.name }}">
+                    <li class="tabs__item" data-tab="">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}"
+                           class="tabs__link">About product
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="reviews">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}reviews"
+                           class="tabs__link">Reviews
+                        </a>
+                    </li>
+                    <li class="tabs__item" data-tab="photo">
+                        <a href="{% url 'detail' detail_slug=product_data.slug %}photo"
+                           class="tabs__link">Photo
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="product-about">
+            <div class="product-about__left">
+                <div class="carousel_container">
+                    <div class="carousel">
+                        <ul class="product-image-list">
+                            {% for image in product_images %}
+                                <li class="product-image-item" data-product-id="{{ product_data.id }}"
+                                    data-price="{{ product_data.price }}" data-image="{{ product_data.image.url }}"
+                                    data-name="{{ product_data.name }}">
+                                    <img src="{{ image.image.url }}" class="photo" alt="">
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button class="slick-prev">Previous</button>
+                        <button class="slick-next">Next</button>
+                    </div>
+                    <div class="thumbnails">
+                        {% for image in product_images %}
+                            <div class="thumbnail-item" onclick="
+                                    goToSlide({{ forloop.counter0 }})">
+                                <img src="{{ image.image.url }}" alt="">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="product_description">
+                        {{ product_data.description }}
+                    </div>
+                </div>
+            </div>
+            <div class="product-about__right">
+                <div class="product_title" style="font-size: 18px; font-weight: 700;">
+                    {{ product_data.name }} {{ product_data.description }}
+                </div>
+                <div class="product_content">
+                    <div class="product_content_body">
+                        <span>Продавец: <span style="font-weight: 700">BERSERKLETRON</span></span>
+                    </div>
+                    <div class="product_trade">
+                        <div>
+                            <p style="margin-bottom: 0; color: #f84147; font-size: 18px; font-weight: 700">{{ product_data.price }}$</p>
+                            <p style="margin-bottom: 0; color: #00a046; font-size: 14px">Есть в наличии</p>
+                        </div>
+                        <div class="DeatailBuyProduct">
+                            <button class="glowingDetail"><i class="bi bi-cart4 fa-xl" id="detailCart"></i>Купить
+                            </button>
+                            <button class="checkProduct"><i class="bi bi-cart4 fa-xl" id="detailCart"></i><span
+                                    class="productInCart">В корзине</span>
+                            </button>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center"
+                             data-product-id="{{ product_data.id }}">
+                            <button class="heartButton">
+                                <img src="{% static 'electron/images/heart.png' %}" class="heart"
+                                     alt="Heart">
+                            </button>
+                            <span class="wishlist-count">{{ count_Like }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

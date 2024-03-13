@@ -5,81 +5,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="{% static 'electron/css/styles.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'electron/css/styles.css' %}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.4/jquery.rateyo.min.css">
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.4/jquery.rateyo.min.js"></script>
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <title>Todo List</title>
 </head>
 <header class="header">
     <nav class="navbar">
-        <div class="menu-block">
-            <div class="catalog">
-                <i class="fa-solid fa-bars fa-xl" style="color: #ffffff;"></i>
+        <div class="menu-block" style="display: flex; justify-content: center; align-items: center; gap: 30px">
+            <div class="wrapper_burger-icon">
+                <div class="burger-icon">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
-            <a href="{% url 'home' %}"><i class="bi bi-house-fill"></i> Home</a>
         </div>
-        <form class="container_search">
-            <div class="block_search">
-                <input type="text" placeholder="Search..." class="search_input" id="searchInput">
-                <div class="block_list_search" id="searchHistory" style="display: none">
-                    <ul style="list-style-type: none">
-                        <li class="search_story">Story search
-                            <button class="button_clear_list" id="searchButton"> Clear list</button>
+        {% if user.is_authenticated %}
+            <div class="cabinet__user">
+                <div class="userAccount" id="userAccount">
+                    <div class="titleUserAccount">
+                        <a href="http://127.0.0.1:8000/"
+                           style="color: white; cursor: pointer;text-decoration: none; font-size: 16px; font-weight: 700">ELECTRON</a>
+                        <button class="closeCabinet"><span style="color: white; font-size: 20px">х</span></button>
+                    </div>
+                    <div class="user__info">
+                        <a href="{% url 'personal-information' %}" class="user__info__link">
+                            <div class="first-letter__name">{{ user.name|first|upper }}</div>
+                            <div class="user__info__content">
+                                <span style="margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #fff; vertical-align: top">{{ user.name }} {{ user.last_name }}</span>
+                                <p style="overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #a6a5a5; margin-bottom: 0; height: 14px">{{ user.email }}</p>
+                            </div>
+                        </a>
+                    </div>
+                    <ul class="side-menu__list">
+                        <li class="side-menu__item__catalog">
+                            <button class="side-menu__button__catalog"><span class="side-menu__button-icon">
+                                <img src="/media/images/category.png" alt=""
+                                     style="width: 24px; height: 24px; transition: all .3s linear;"></span>
+                                Catalog goods
+                            </button>
+                        </li>
+                        <li class="side-menu__item__shop-cart">
+                            <button class="side-menu__button__shop-cart"><span class="side-menu__button-icon">
+                                <i class="bi bi-cart4" id="cabinetShopCart"></i></span>
+                                Shopping cart
+                            </button>
+                        </li>
+                        <li class="side-menu__item__logout" style="padding: 2px 8px">
+                            <button class="side-menu__button__logout" type="button" id="logout">
+                                <a href="{% url 'logout' %}"
+                                   style="color: #221f1f; text-decoration: none; font-size: 16px">Logout</a>
+                            </button>
                         </li>
                     </ul>
                 </div>
-            </div>
-            <button class="button_search">Search</button>
-        </form>
-        <div class="container_auth_cart">
-            <div class="form-inline my-2 my-lg-0">
-                {% if request.user.is_authenticated %}
-                    <a href="#" class="welcome">Hi, {{ request.user.name | title }}!</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
-                    <a href="{% url 'register' %}" class="btn btn-register">Signup</a>
-                {% endif %}
-            </div>
-            <div class="cart" style="padding-right: 20px;">
-                <i class="bi bi-cart4" id="main-cart" style="display: inline-block; margin-bottom: -10px"></i>
-                <div class="total-text">
-                    <span id="items">Items</span>
-                    <span id="items-basket" style="display: inline-block; padding-bottom: 1px"></span>
+                <div class="userAccountWrapper">
+                    <div class="modal_background_userAccount"></div>
                 </div>
             </div>
-            <div id="cart-items">
-                <ol id="list-item">
-                </ol>
-
-                <div class="total-text">
-                    <p>Total: </p>
-                    <div class="block-checkout">
-                        <span id="total-price"></span>
-                        <a href="{% url 'checkout' %}" id="checkout-button" style="text-decoration: none"></a>
+        {% else %}
+            <div class="cabinet__user">
+                <div class="userAccount" id="userAccount">
+                    <div class="titleUserAccount">
+                        <a href="http://127.0.0.1:8000/"
+                           style="color: white; cursor: pointer;text-decoration: none; font-size: 16px; font-weight: 700">ELECTRON</a>
+                        <button class="closeCabinet"><span style="color: white; font-size: 20px">х</span></button>
                     </div>
+                    <div class="authCabinet">
+                        <div class="authWrapCabinet">
+                            <div class="userAvatar"><img src="{% static 'electron/images/user.png' %}" alt="User"
+                                                         style="width: 25px; height: 25px;">
+                            </div>
+                            <div>
+                                <div class="authButtons">
+                                    <button class="buttonLoginCabinet" type="button">Login</button>
+                                    <button class="buttonRegistrationCabinet" type="button">Registration</button>
+                                </div>
+                                <p style="overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #a6a5a5;">
+                                    Авторизуйтесь для получения расширенных возможностей </p>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="side-menu__list">
+                        <li class="side-menu__item__catalog">
+                            <button class="side-menu__button__catalog"><span class="side-menu__button-icon">
+                                <img src="/media/images/category.png" alt=""
+                                     style="width: 24px; height: 24px; transition: all .3s linear;"></span>
+                                Catalog goods
+                            </button>
+                        </li>
+                        <li class="side-menu__item__shop-cart">
+                            <button class="side-menu__button__shop-cart"><span class="side-menu__button-icon">
+                                <i class="bi bi-cart4" id="cabinetShopCart"></i></span>
+                                Shopping cart
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="userAccountWrapper">
+                    <div class="modal_background_userAccount"></div>
+                </div>
+            </div>
+        {% endif %}
+        <a href="{% url 'home' %}" class="homaPage">BERSERKLETRON</a>
+        <button class="catalog" type="button"><img src="/media/images/category.png" alt=""
+                                                   style="width: 20px; height: 20px"><span
+                style="color: white; margin: 10px">Catalog</span>
+        </button>
+        <div class="catalogWrapper" style="top: 80px; padding-top: 0;">
+            <div class="modal_background_catalog"></div>
+            <div class="catalogContent"
+                 style="position: absolute; top:1px; background-color: #FAFAFA; flex-direction: row; width: 82%">
+                <div class="catalogCategory">
+                    <ul class="menuCategory">
+                        {% for object in category_list %}
+                            <li class="category_list" style="padding-left: 12px">
+                                <i class="fas fa-{{ object.icon }}"
+                                   style="width: 20px; color: #adb8c8; padding-top: 5px"></i>
+                                <a href="{% url 'category' category_slug=object.slug %}" class="category_link">
+                                    <span class="category_title">{{ object.name }}</span>
+                                </a>
+                                <img src="/media/images/down.png" alt="chevron_down" class="chevronDown">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="catalogSubCategoryBrand">
+                    <ul class="menuSubCategoryBrand">
+                        {% for sub_cat in sub_category_list %}
+                            <li class="subcategory_list"
+                                style="padding-left: 12px; flex-direction: column; align-items: start; width: 33%"
+                                data-category="{{ sub_cat.category }}">
+                                <a href="{% url 'sub_category' sub_category=sub_cat.slug %}"
+                                   class="subcategory_link">
+                                    <span class="subcategory_title">{{ sub_cat.name }}</span>
+                                </a>
+                                <ul class="each-subcategory__brands">
+                                    {% for brand in sub_cat.brand_set.all %}
+                                        <li style="padding-left: 12px">{{ brand.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="deleteAccountWrapperSuccess">
+            <div class="modal_background_successDeleteAcc">
+            </div>
+            <div class="modalDeleteAccSuccess" style="width: 35%; height: 60%">
+                <div class="modalHeader">
+                    <button class="modal__close" id="closeModalChangePass">
+                        x
+                    </button>
+                </div>
+                <div class="modalHeaderSuccess" style="padding: 24px">
+                    <div class="thanks_modal">
+                        <img src="{% static 'electron/images/verified.png' %}" alt=""
+                             style="width: 48px; height: 48px; margin-bottom: 20px">
+                        <span style="text-align: center; font-size: 16px; color: #797878;">Your account has been successfully deleted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+        <form class="container_search">
+            <div class="block_search">
+                <input type="text" placeholder="Search..." class="search_input" id="searchInput" autocomplete="off">
+                <div class="block_list_search" id="searchHistory" style="display: none">
+                    <ul id="historyList" style="list-style-type: none; position: relative; margin-bottom: 0">
+                        <li class="main_search_story"><span>Story search</span>
+                            <button type="button" class="button_clear_list"> Clear list</button>
+                        </li>
+                    </ul>
+                    <ul id="blocklSearchResult" style="margin-bottom: 0">
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="button_search" id="searchButton">Search</button>
+        </form>
+        <button class="user">
+            <img src="{% static "electron/images/user.png" %}" alt="" class="userPhoto">
+        </button>
+        <div class="loginWrapper">
+            <div class="modal_background_login">
+            </div>
+            <div class="modalLogin" style="width: 48%; height: 60%">
+                <div class="modalHeader">
+                    <h3>Login</h3>
+                    <button class="modal__close">
+                        <div class="closeWindow"></div>
+                    </button>
+                </div>
+                <div class="modalHeaderLogin" style="padding: 24px; overflow-y: auto">
+                    <div class="login_modal">
+                        <form method="post" id="loginForm">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="{{ field.name }}Field">
+                                    {{ field.label_tag }}
+                                    <div>
+                                        {{ field }}
+                                        {% if field.name == 'password' %}
+                                            <button class="hide">
+                                                <div class="hideWindow"></div>
+                                                <div class="visibleWindow" style="display: none"></div>
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="authChoiceButtons">
+                                <button id="buttonLogin" type="submit">Login</button>
+                                <button id="buttonChoiceRegistration" type="button">Registration</button>
+                            </div>
+                            <span class="auth-modal__divider">или</span>
+                        </form>
+                        <div class="auth-modal__social">
+                            <div>
+                                <p class="auth-modal__social-label">Войти как пользователь</p>
+                                <div>
+                                    <button class="socialButton"><img
+                                            src="{% static 'electron/images/facebook.png' %}" class="imgFacebook"
+                                            alt="">
+                                        Facebook
+                                    </button>
+                                    <button class="socialButton" style="margin-top: 20px">
+                                        <img src="{% static 'electron/images/google.png' %}" class="imgGoogle"
+                                             alt="">
+                                        Google
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="registrationWrapper">
+            <div class="modal_background_registration">
+            </div>
+            <div class="modalRegistration" style="width: 48%; height: 98%">
+                <div class="modalHeader">
+                    <h3>Registration</h3>
+                    <button class="modal__close">
+                        <div class="closeWindow"></div>
+                    </button>
+                </div>
+                <div class="modalHeaderRegistration" style="padding: 24px; overflow-y: auto">
+                    <div class="registration_modal" style="padding-bottom: 0">
+                        <form method="post" id="registrationForm">
+                            {% csrf_token %}
+
+                            {% for field in formRegistration %}
+                                <div class="{{ field.name }}Field">
+                                    {{ field.label_tag }}
+                                    <div>
+                                        {{ field }}
+                                        {% if field.name == 'password1' or field.name == 'password2' %}
+                                            <button class="hide" type="button">
+                                                <div class="hideWindow"></div>
+                                                <div class="visibleWindow" style="display: none"></div>
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if field.errors %}
+                                    <small>{{ field.errors|striptags }}</small>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="authChoiceButtons">
+                                <button id="buttonRegistration" type="button">Registration</button>
+                                <button id="buttonChoiceLogin" type="button">Login</button>
+                            </div>
+                            <span class="auth-modal__divider">или</span>
+                        </form>
+                        <div class="auth-modal__social">
+                            <div>
+                                <p class="auth-modal__social-label">Войти как пользователь</p>
+                                <div>
+                                    <button class="socialButton"><img
+                                            src="{% static 'electron/images/facebook.png' %}" class="imgFacebook"
+                                            alt="">
+                                        Facebook
+                                    </button>
+                                    <button class="socialButton" style="margin-top: 20px">
+                                        <img src="{% static 'electron/images/google.png' %}" class="imgGoogle"
+                                             alt="">
+                                        Google
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cart">
+            <i class="bi bi-cart4" id="main-cart"
+               style="display: inline-block; margin-bottom: -10px; justify-content: center"></i>
+            <div class="total-text">
+                <span id="items">Items</span>
+                <span id="items-basket" style="display: inline-block; padding-bottom: 1px"></span>
+            </div>
+        </div>
+        <div id="cart-items">
+            <ol id="list-item">
+            </ol>
+
+            <div class="total-text">
+                <p>Total: </p>
+                <div class="block-checkout">
+                    <span id="total-price"></span>
+                    <a href="{% url 'checkout' %}" id="checkout-button" style="text-decoration: none"></a>
                 </div>
             </div>
         </div>
     </nav>
 </header>
 <body>
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+
 {% block content %}
-{% endblock content %}
-<script src={% static "electron/js/script.js" %}></script>
+{% endblock %}
+<div class="changePassWrap">
+    <div class="modal_background_changePass">
+    </div>
+    <div class="modalChangePass" style="width: 35%; height: 65%">
+        <div class="modalHeader">
+            <h4 style="margin-bottom: 0">Change password</h4>
+            <button class="modal__close" id="closeModalChangePass">
+                x
+            </button>
+        </div>
+        <div class="modalContent" style="overflow-y: hidden">
+            <form id="changePasswordForm" method="post">
+                {% csrf_token %}
+                {% for field in changePasswordForm %}
+                    <div class="{{ field.name }}Field">
+                        {{ field.label_tag }}
+                        <div style="display: flex;">
+                            {{ field }}
+                            {% if field.name == 'old_password' or field.name == 'new_password1' or field.name == 'new_password2' %}
+                                <button class="hide" type="button">
+                                    <div class="hideWindow"></div>
+                                    <div class="visibleWindow" style="display: none"></div>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="change-password__footer">
+                    <button type="button" class="cancelChangePassword">Cancel</button>
+                    <button type="button" class="saveNewPassword">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="changePassWrapperSuccess">
+    <div class="modal_background_successChangePass">
+    </div>
+    <div class="modalChangePassSuccess" style="width: 35%; height: 60%">
+        <div class="modalHeader">
+            <button class="modal__close" id="closeModalChangePass">
+                x
+            </button>
+        </div>
+        <div class="modalHeaderSuccess" style="padding: 24px">
+            <div class="thanks_modal">
+                <img src="{% static 'electron/images/verified.png' %}" alt=""
+                     style="width: 48px; height: 48px; margin-bottom: 20px">
+                <h2 style="margin-bottom: 20px">Good!</h2>
+                <span style="text-align: center; font-size: 16px; color: #797878;">Your password has been successfully changed</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'electron/js/script.js' %}">
+</script>
 </body>
 <footer class="footer">
     <div class="container">

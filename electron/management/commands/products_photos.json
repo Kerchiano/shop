@@ -1,0 +1,71 @@
+{
+  "Notebooks": [
+    "images/notebook_photo1.webp",
+    "images/notebook_photo2.webp",
+    "images/notebook_photo3.webp",
+    "images/notebook_photo4.webp"
+  ],
+  "Computers": [
+    "images/computers1.webp",
+    "images/computers2.webp",
+    "images/computers3.webp",
+    "images/computers4.webp"
+  ],
+  "Monitors": [
+    "images/monitors1.webp",
+    "images/monitors2.webp",
+    "images/monitors3.webp",
+    "images/monitors4.webp"
+  ],
+  "Tablets": [
+    "images/tablets1.webp",
+    "images/tablets2.webp",
+    "images/tablets3.webp",
+    "images/tablets4.webp"
+  ],
+  "TV-cables": [
+    "images/cables1.webp",
+    "images/cables2.webp",
+    "images/cables3.webp",
+    "images/cables4.webp"
+  ],
+  "Smartphones": [
+    "images/mobile1.webp",
+    "images/mobile2.webp",
+    "images/mobile3.webp",
+    "images/mobile4.webp"
+  ],
+  "TV": [
+    "images/TV1.webp",
+    "images/TV2.webp",
+    "images/TV3.webp",
+    "images/TV4.webp"
+  ],
+  "Power-banks": [
+    "images/powerbank1.webp",
+    "images/powerbank2.webp",
+    "images/powerbank3.webp",
+    "images/powerbank4.webp"
+  ],
+  "Gaming-consoles": [
+    "images/console1.webp",
+    "images/console2.webp",
+    "images/console3.webp",
+    "images/console4.webp"
+  ],
+  "Gaming-notebooks": [
+    "images/gaming_notebooks1.webp",
+    "images/gaming_notebooks2.webp",
+    "images/gaming_notebooks3.webp",
+    "images/gaming_notebooks4.webp"
+  ],
+  "Games": [
+    "images/games1.webp"
+  ],
+  "Gaming-chairs": [
+    "images/gaming_chairs1.webp",
+    "images/gaming_chairs2.webp",
+    "images/gaming_chairs3.webp",
+    "images/gaming_chairs4.webp"
+  ]
+}
